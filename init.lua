@@ -16,6 +16,10 @@ vim.opt.foldmethod = "indent"  -- Plegar basado en indentación
 vim.opt.foldlevel = 99  -- Abrir todos los folds por defecto
 vim.opt.foldenable = true
 
+-- Título del terminal (muestra nombre del proyecto)
+vim.opt.title = true
+vim.opt.titlestring = "nvim - %{fnamemodify(getcwd(), ':t')}"
+
 -- Reconocer extensiones personalizadas
 vim.filetype.add({
   extension = {
