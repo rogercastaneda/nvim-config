@@ -67,7 +67,31 @@ require("lazy").setup({
   -- FILE TREE (EXPLORADOR)
   {
     "nvim-neo-tree/neo-tree.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" }
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+    config = function()
+      -- Desactivar netrw para evitar conflictos
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+
+      require("neo-tree").setup({
+        close_if_last_window = true,
+        window = {
+          position = "left",
+          width = 35,
+        },
+        filesystem = {
+          hijack_netrw_behavior = "disabled",
+          follow_current_file = { enabled = true },
+        },
+      })
+
+      -- Abrir Neo-tree automáticamente al iniciar
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function()
+          vim.cmd("Neotree show")
+        end,
+      })
+    end,
   },
 
   -- TELESCOPE (buscador)
@@ -236,16 +260,18 @@ require("lazy").setup({
         adapters = {
           http = {
             anthropic = function()
+              local keys = require("api_keys")
               return require("codecompanion.adapters").extend("anthropic", {
                 env = {
-                  api_key = os.getenv("ANTHROPIC_API_KEY"),
+                  api_key = keys.anthropic,
                 },
               })
             end,
             gemini = function()
+              local keys = require("api_keys")
               return require("codecompanion.adapters").extend("gemini", {
                 env = {
-                  api_key = os.getenv("GEMINI_API_KEY"),
+                  api_key = keys.gemini,
                 },
               })
             end,

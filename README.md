@@ -86,28 +86,23 @@ Después de instalar, configura tu terminal para usar la fuente:
 
 ---
 
-## Variables de Entorno (API Keys)
+## API Keys (AI Features)
 
-Para usar las funciones de AI (Claude/Gemini), agrega las API keys a tu shell config:
+Para usar las funciones de AI (Claude/Gemini), crea un archivo de configuración con tus API keys:
 
-### Bash (~/.bashrc)
-
-```bash
-export ANTHROPIC_API_KEY="tu-api-key-de-anthropic"
-export GEMINI_API_KEY="tu-api-key-de-gemini"
-```
-
-### Zsh (~/.zshrc)
+### Crear archivo de keys
 
 ```bash
-export ANTHROPIC_API_KEY="tu-api-key-de-anthropic"
-export GEMINI_API_KEY="tu-api-key-de-gemini"
-```
+cat > ~/.config/nvim/api_keys.lua << 'EOF'
+-- API Keys para Neovim (NO versionar este archivo)
+return {
+  anthropic = "tu-api-key-de-anthropic",
+  gemini = "tu-api-key-de-gemini"
+}
+EOF
 
-Después de agregar, recarga tu shell:
-
-```bash
-source ~/.zshrc  # o ~/.bashrc
+# Asegurar permisos (solo tu usuario puede leer)
+chmod 600 ~/.config/nvim/api_keys.lua
 ```
 
 ### Obtener API Keys
@@ -116,6 +111,8 @@ source ~/.zshrc  # o ~/.bashrc
 |----------|-----|
 | Anthropic (Claude) | https://console.anthropic.com/settings/keys |
 | Google (Gemini) | https://aistudio.google.com/app/apikey |
+
+> **Nota:** El archivo `api_keys.lua` está en `.gitignore` para no exponer tus keys.
 
 ---
 
