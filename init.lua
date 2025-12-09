@@ -89,10 +89,25 @@ require("lazy").setup({
         },
       })
 
-      -- Abrir Neo-tree automáticamente al iniciar
+      -- Neo-tree se abre via auto-session post_restore_cmds
+      -- Para directorios sin sesión guardada:
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
-          vim.cmd("Neotree show")
+          vim.defer_fn(function()
+            -- Solo abrir si no hay sesión (auto-session no lo abrió)
+            local neo_tree_open = false
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+              if ft == "neo-tree" then
+                neo_tree_open = true
+                break
+              end
+            end
+            if not neo_tree_open then
+              pcall(vim.cmd, "Neotree show")
+            end
+          end, 200)
         end,
       })
     end,
@@ -228,18 +243,21 @@ require("lazy").setup({
         auto_session_enable_last_session = false,
         auto_save_enabled = true,
         auto_restore_enabled = true,
-        -- Asegurar que todos los buffers se guarden y restauren
         auto_session_use_git_branch = false,
         session_lens = {
           load_on_setup = true,
         },
-        -- Hook para forzar carga de filetypes lazy-loaded
+        -- Cerrar Neo-tree antes de guardar sesión para evitar conflictos
+        pre_save_cmds = {
+          "Neotree close",
+        },
+        -- Hook para restaurar Neo-tree y filetypes después de cargar sesión
         post_restore_cmds = {
           function()
-            -- Forzar detección de filetype después de restaurar
             vim.cmd("filetype detect")
             vim.cmd("doautocmd BufRead")
-          end
+          end,
+          "Neotree show",
         },
       })
     end,
