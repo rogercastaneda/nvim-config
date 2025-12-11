@@ -233,6 +233,15 @@ require("lazy").setup({
     end,
   },
 
+  -- LAZYGIT (git UI)
+  {
+    "kdheepak/lazygit.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
+  },
+
   -- SESSION MANAGER (persistencia de sesiones)
   {
     "rmagatti/auto-session",
