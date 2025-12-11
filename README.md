@@ -25,6 +25,9 @@ sudo apt install nodejs
 
 # Build essentials (para compilar algunos plugins)
 sudo apt install build-essential
+
+# lazygit (para el plugin lazygit.nvim)
+# Ver: https://github.com/jesseduffield/lazygit#installation
 ```
 
 ### macOS
@@ -44,6 +47,9 @@ brew install ripgrep
 
 # Node.js (requerido para algunos LSP servers)
 brew install node
+
+# lazygit (para el plugin lazygit.nvim)
+brew install lazygit
 ```
 
 ---
@@ -116,6 +122,35 @@ chmod 600 ~/.config/nvim/api_keys.lua
 
 ---
 
+## Codeium (AI Inline Completions)
+
+Codeium proporciona autocompletado inline gratuito con AI (similar a Copilot).
+
+### Autenticación (primera vez)
+
+```vim
+:Codeium Auth
+```
+
+Se abrirá el navegador para crear cuenta gratuita en codeium.com/windsurf.com. Copia el token y pégalo en Neovim.
+
+### Uso
+
+1. Entra en modo Insert (`i`)
+2. Escribe código - aparecerán sugerencias en gris (ghost text)
+3. Usa los atajos para interactuar
+
+### Atajos (solo en modo Insert)
+
+| Atajo | Acción |
+|-------|--------|
+| `Tab` | Aceptar sugerencia |
+| `Alt+]` | Siguiente sugerencia |
+| `Alt+[` | Sugerencia anterior |
+| `Ctrl+x` | Cancelar sugerencia |
+
+---
+
 ## Instalación
 
 1. **Clonar/Copiar configuración:**
@@ -159,8 +194,10 @@ chmod 600 ~/.config/nvim/api_keys.lua
 | **nvim-cmp** | Autocompletado | Sugerencias de código |
 | **Comment.nvim** | Comentarios | Toggle comentarios inteligente |
 | **which-key** | Key helper | Muestra atajos disponibles |
+| **lazygit.nvim** | Git UI | Interfaz visual para Git |
 | **auto-session** | Session manager | Persistencia de sesiones por proyecto |
 | **codecompanion** | AI assistant | Chat con Claude/Gemini |
+| **codeium** | AI completions | Autocompletado inline con AI (gratis) |
 
 ---
 

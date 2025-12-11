@@ -272,6 +272,28 @@ require("lazy").setup({
     end,
   },
 
+  -- AI INLINE COMPLETIONS (Codeium - gratis)
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+    config = function()
+      -- Tab para aceptar sugerencia
+      vim.keymap.set("i", "<Tab>", function()
+        if vim.fn["codeium#Accept"]() ~= "" then
+          return vim.fn["codeium#Accept"]()
+        else
+          return "<Tab>"
+        end
+      end, { expr = true, silent = true })
+      -- Alt+] para siguiente sugerencia
+      vim.keymap.set("i", "<M-]>", function() return vim.fn["codeium#CycleCompletions"](1) end, { expr = true, silent = true })
+      -- Alt+[ para sugerencia anterior
+      vim.keymap.set("i", "<M-[>", function() return vim.fn["codeium#CycleCompletions"](-1) end, { expr = true, silent = true })
+      -- Ctrl+x para cancelar sugerencia
+      vim.keymap.set("i", "<C-x>", function() return vim.fn["codeium#Clear"]() end, { expr = true, silent = true })
+    end,
+  },
+
   -- AI CODE SUGGESTIONS (Claude/Gemini)
   {
     "olimorris/codecompanion.nvim",
