@@ -30,8 +30,19 @@
 - Buscar "resource" solo en carpetas `terraform/`
 - Buscar "function" solo en carpetas `src/`
 
-**Exclusiones:** `node_modules/`, `vendor/`, `.git/`, `.terraform/`
+**Exclusiones:** `node_modules/`, `vendor/`, `.git/`, `.terraform/`, `.terragrunt-cache/`
 **Nota:** `<Space>fa` muestra archivos en `.gitignore` como `.env`, `terraform.tfvars`
+
+### Abrir Archivos en la Lista de Telescope
+
+Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
+
+| Atajo | Descripción |
+|-------|-------------|
+| `Enter` | Abrir en el buffer actual |
+| `Ctrl+v` | Abrir en split vertical |
+| `Ctrl+x` | Abrir en split horizontal |
+| `Ctrl+t` | Abrir en nueva pestaña |
 
 ---
 
@@ -45,16 +56,19 @@
 ### Operaciones de Archivos (dentro de Neotree)
 | Atajo | Descripción |
 |-------|-------------|
-| `r` | Renombrar archivo/carpeta |
+| `a` | Crear nuevo archivo/carpeta |
 | `d` | Eliminar archivo/carpeta |
-| `a` | Crear nuevo archivo |
-| `A` | Crear nueva carpeta |
-| `c` | Copiar archivo |
-| `x` | Cortar archivo |
-| `p` | Pegar archivo |
-| `y` | Copiar nombre del archivo |
-| `Y` | Copiar ruta relativa |
-| `Enter` | Abrir archivo/expandir carpeta |
+| `r` | Renombrar archivo/carpeta |
+| `y` | Copiar (yank) archivo/carpeta |
+| `x` | Cortar archivo/carpeta |
+| `p` | Pegar archivo/carpeta |
+| `m` | Marcar/desmarcar archivo (para operaciones múltiples) |
+| `Enter` o `<Space>` | Abrir archivo/expandir carpeta |
+| `-` | Cerrar folder actual |
+| `<Backspace>` | Ir al directorio padre |
+| `.` | Establecer directorio como root |
+| `H` | Mostrar/ocultar archivos ocultos |
+| `?` | Ver todos los atajos disponibles |
 
 ---
 
@@ -111,10 +125,12 @@
 ### Navegación de código
 | Atajo | Descripción |
 |-------|-------------|
-| `gd` | Ir a definición |
+| `gd` | Ir a definición (mismo buffer) |
+| `<Space>gd` | Ir a definición (split vertical) |
 | `gi` | Ir a implementación |
 | `gr` | Ver referencias |
 | `K` | Mostrar documentación (hover) |
+| `<Space>q` | Cerrar lista de referencias/quickfix |
 
 ### Refactorización
 | Atajo | Descripción |
@@ -132,6 +148,36 @@
 - Python (pyright)
 - Go (gopls)
 - Typst (tinymist)
+
+---
+
+## 🔍 Búsqueda y Reemplazo (Spectre)
+
+| Atajo | Descripción |
+|-------|-------------|
+| `<Space>sr` | Search & Replace en todo el proyecto |
+| `<Space>sw` | Buscar palabra bajo el cursor |
+| `<Space>sf` | Search & Replace en archivo actual |
+
+**Dentro de Spectre:**
+- Escribir texto a buscar en la primera línea
+- Escribir reemplazo en la segunda línea
+- `<Space>R` para reemplazar todos
+- `dd` en una línea para excluirla del reemplazo
+
+---
+
+## 🎯 Git (LazyGit)
+
+| Atajo | Descripción |
+|-------|-------------|
+| `<Space>lg` | Abrir LazyGit (interfaz git) |
+| `q` (dentro de LazyGit) | Cerrar LazyGit |
+
+**Dentro de LazyGit:**
+- Navegación visual completa de git
+- `Esc` funciona normalmente para cancelar operaciones
+- Consulta la documentación de LazyGit para más atajos
 
 ---
 
@@ -166,7 +212,22 @@
 
 ---
 
-## 🤖 AI Code Suggestions (Claude/Gemini)
+## 🤖 AI Inline Completions (Codeium)
+
+**Sugerencias de código en tiempo real - GRATIS**
+
+| Atajo | Descripción |
+|-------|-------------|
+| `Tab` | Aceptar sugerencia AI |
+| `Alt+]` | Siguiente sugerencia |
+| `Alt+[` | Sugerencia anterior |
+| `Ctrl+x` | Cancelar sugerencia |
+
+**Activación:** Aparece automáticamente mientras escribes código
+
+---
+
+## 💬 AI Code Assistant (Claude/Gemini)
 
 | Atajo | Descripción |
 |-------|-------------|
@@ -176,7 +237,7 @@
 | `<Space>aa` | Agregar selección al chat (modo visual) |
 
 **Configuración actual:** Anthropic Claude
-**Cambiar a Gemini:** Editar `init.lua` líneas 143-144
+**Cambiar a Gemini:** Editar `init.lua` sección codecompanion
 
 ---
 
@@ -320,6 +381,9 @@ O cierra y reabre Neovim.
 - **Comment.nvim** - Comentarios inteligentes
 - **Which-key** - Muestra atajos disponibles
 - **Auto-Session** - Persistencia de sesiones por proyecto
+- **LazyGit.nvim** - Interfaz Git visual
+- **nvim-spectre** - Búsqueda y reemplazo avanzado
+- **Codeium** - AI inline completions (gratis)
 - **CodeCompanion** - AI code suggestions (Claude/Gemini)
 
 ---
@@ -336,4 +400,4 @@ O cierra y reabre Neovim.
 ---
 
 **Archivo de configuración:** `~/.config/nvim/init.lua`
-**Fecha actualización:** 2025-12-02
+**Fecha actualización:** 2025-12-24
