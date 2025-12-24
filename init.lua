@@ -2,7 +2,7 @@
 --     CONFIG BÁSICA
 -- =======================
 vim.opt.number = true
-vim.opt.relativenumber = true  -- puedes desactivarlo si no te gusta
+vim.opt.relativenumber = false  -- números absolutos en todas las líneas
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
@@ -82,6 +82,12 @@ require("lazy").setup({
         window = {
           position = "left",
           width = 35,
+          mappings = {
+            ["-"] = "close_node",
+            ["<bs>"] = "navigate_up",
+            ["."] = "set_root",
+            ["H"] = "toggle_hidden",
+          },
         },
         filesystem = {
           hijack_netrw_behavior = "disabled",
@@ -129,6 +135,7 @@ require("lazy").setup({
             "vendor/",
             "%.git/",
             "%.terraform/",
+            "%.terragrunt%-cache",
           },
           vimgrep_arguments = {
             "rg",
@@ -239,6 +246,17 @@ require("lazy").setup({
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
       { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
+  },
+
+  -- SEARCH & REPLACE (UI visual)
+  {
+    "nvim-pack/nvim-spectre",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      { "<leader>sr", function() require("spectre").open() end, desc = "Search & Replace (proyecto)" },
+      { "<leader>sw", function() require("spectre").open_visual({ select_word = true }) end, desc = "Search palabra bajo cursor" },
+      { "<leader>sf", function() require("spectre").open_file_search() end, desc = "Search & Replace (archivo actual)" },
     },
   },
 
@@ -433,10 +451,22 @@ cmp.setup({
 -- =======================
 --   ATAJOS LSP
 -- =======================
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-vim.keymap.set("n", "gr", vim.lsp.buf.references)
-vim.keymap.set("n", "K",  vim.lsp.buf.hover)
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
-vim.keymap.set("n", "<leader>a",  vim.lsp.buf.code_action)
-vim.keymap.set("n", "<leader>d",  vim.diagnostic.open_float)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
+vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
+vim.keymap.set("n", "K",  vim.lsp.buf.hover, { desc = "Hover documentation" })
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
+vim.keymap.set("n", "<leader>a",  vim.lsp.buf.code_action, { desc = "Code action" })
+vim.keymap.set("n", "<leader>d",  vim.diagnostic.open_float, { desc = "Show diagnostics" })
+
+-- Abrir definición en split vertical
+vim.keymap.set("n", "<leader>gd", function()
+  vim.cmd("vsplit")
+  vim.lsp.buf.definition()
+end, { desc = "Go to definition (split)" })
+
+-- Cerrar quickfix/location list (lista de referencias)
+vim.keymap.set("n", "<leader>q", function()
+  vim.cmd("cclose")
+  vim.cmd("lclose")
+end, { desc = "Close quickfix/location list" })
