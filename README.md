@@ -151,6 +151,35 @@ Se abrirá el navegador para crear cuenta gratuita en codeium.com/windsurf.com. 
 
 ---
 
+## Highlight de Referencias (vim-illuminate)
+
+Resalta automáticamente todas las referencias de la variable/función bajo el cursor en el archivo actual.
+
+### Comportamiento
+
+- Posiciona el cursor sobre una variable, función o símbolo
+- Después de 100ms, todas las referencias se resaltan automáticamente
+- Funciona con LSP (preciso), Treesitter o regex según disponibilidad
+
+### Navegación entre referencias
+
+| Atajo | Acción |
+|-------|--------|
+| `]r` | Ir a siguiente referencia |
+| `[r` | Ir a referencia anterior |
+
+### Ejemplo
+
+```javascript
+const userName = "John";  // ← cursor aquí
+console.log(userName);    // ← se resalta automáticamente
+return userName;          // ← se resalta automáticamente
+```
+
+**Similar a VSCode**: Cuando haces click en una variable en VSCode y se resaltan sus usos.
+
+---
+
 ## Instalación
 
 1. **Clonar/Copiar configuración:**
@@ -196,6 +225,9 @@ Se abrirá el navegador para crear cuenta gratuita en codeium.com/windsurf.com. 
 | **which-key** | Key helper | Muestra atajos disponibles |
 | **lazygit.nvim** | Git UI | Interfaz visual para Git |
 | **auto-session** | Session manager | Persistencia de sesiones por proyecto |
+| **nvim-spectre** | Search & Replace | Búsqueda y reemplazo visual en proyecto |
+| **none-ls** | Formateo y linting | ESLint, Prettier, y formateadores multi-lenguaje |
+| **vim-illuminate** | Highlight referencias | Resalta automáticamente usos de variables/funciones |
 | **codecompanion** | AI assistant | Chat con Claude/Gemini |
 | **codeium** | AI completions | Autocompletado inline con AI (gratis) |
 
@@ -222,6 +254,35 @@ Instalados automáticamente via Mason:
 
 ---
 
+## Formateo y Linting (none-ls)
+
+none-ls proporciona formateo automático y validación de código. Detecta automáticamente las configuraciones del proyecto (`.eslintrc`, `.prettierrc`, etc.).
+
+### Herramientas Soportadas
+
+| Lenguaje | Formateador | Linter | Instalación |
+|----------|-------------|--------|-------------|
+| **JavaScript/TypeScript** | Prettier | ESLint | `npm install -g eslint prettier` |
+| **PHP** | phpcbf | phpcs | `composer global require squizlabs/php_codesniffer` |
+| **Python** | black | pylint | `pip install black pylint` |
+| **Go** | gofmt | - | Incluido con Go |
+| **Shell** | shfmt | - | `brew install shfmt` (macOS) / `apt install shfmt` (Linux) |
+
+### Funcionalidades
+
+- **Format on save**: Formatea automáticamente al guardar (`:w`)
+- **Code actions**: `<leader>a` muestra fixes de ESLint disponibles
+- **Configuración por proyecto**: Usa `.eslintrc`, `.prettierrc` del proyecto automáticamente
+- **Multi-lenguaje**: Soporte para JS/TS, PHP, Python, Go, Shell
+
+### Notas
+
+- **Proyectos con package.json**: Si el proyecto tiene `eslint`/`prettier` en `package.json`, none-ls usa esas versiones automáticamente
+- **Instalación global**: Solo necesaria si trabajas en proyectos sin estas dependencias
+- **Desactivar temporalmente**: Puedes comentar la sección "Format on save" en `init.lua`
+
+---
+
 ## Funcionalidades
 
 | Funcionalidad | Descripción |
@@ -231,7 +292,11 @@ Instalados automáticamente via Mason:
 | **Splits** | Navegación y redimensionado de ventanas |
 | **Terminal integrado** | Terminal dentro de Neovim |
 | **Live grep** | Búsqueda de texto con filtro de carpetas |
+| **Search & Replace** | Búsqueda y reemplazo visual en proyecto (Spectre) |
 | **Sesiones automáticas** | Restaura archivos/splits al reabrir proyecto |
+| **Format on save** | Formateo automático al guardar con Prettier/black/gofmt |
+| **ESLint integration** | Validación y fixes automáticos de ESLint |
+| **Highlight referencias** | Resalta automáticamente usos de variables/funciones |
 | **AI Chat** | Asistente de código con Claude o Gemini |
 | **Autocompletado** | Sugerencias de LSP, buffer y paths |
 | **Diagnósticos** | Errores y warnings en tiempo real |
@@ -284,6 +349,27 @@ source ~/.zshrc
 - Verificar que estés en el mismo directorio donde guardaste la sesión
 - Las sesiones se guardan por directorio de trabajo
 
+### Prettier/ESLint no funciona
+```bash
+# Verificar que las herramientas estén instaladas
+which prettier
+which eslint
+
+# Si están en node_modules del proyecto, none-ls las encontrará automáticamente
+# Si no, instala globalmente:
+npm install -g eslint prettier
+```
+
+### Format on save no funciona
+- Verificar que las herramientas estén instaladas (ver arriba)
+- Revisar logs: `:messages`
+- Para PHP/Python/Shell: instalar herramientas correspondientes (ver sección "Formateo y Linting")
+
+### Highlight de referencias no funciona
+- Espera 100ms después de mover el cursor (delay configurado)
+- Solo resalta si hay 2+ referencias en el archivo
+- Requiere que el LSP esté activo para mejor precisión
+
 ---
 
 ## Actualización
@@ -299,4 +385,4 @@ source ~/.zshrc
 
 ---
 
-**Atajos de teclado:** Ver `~/Desktop/nvim-keybindings.md`
+**Atajos de teclado:** Ver `./nvim-keybindings.md`

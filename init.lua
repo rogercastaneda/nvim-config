@@ -95,25 +95,30 @@ require("lazy").setup({
         },
       })
 
+      -- Variable global para coordinar con auto-session
+      vim.g.neotree_session_restored = false
+
       -- Neo-tree se abre via auto-session post_restore_cmds
       -- Para directorios sin sesión guardada:
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
           vim.defer_fn(function()
-            -- Solo abrir si no hay sesión (auto-session no lo abrió)
-            local neo_tree_open = false
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-              local buf = vim.api.nvim_win_get_buf(win)
-              local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-              if ft == "neo-tree" then
-                neo_tree_open = true
-                break
+            -- Solo abrir si no hay sesión restaurada por auto-session
+            if not vim.g.neotree_session_restored then
+              local neo_tree_open = false
+              for _, win in ipairs(vim.api.nvim_list_wins()) do
+                local buf = vim.api.nvim_win_get_buf(win)
+                local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+                if ft == "neo-tree" then
+                  neo_tree_open = true
+                  break
+                end
+              end
+              if not neo_tree_open then
+                pcall(vim.cmd, "Neotree show")
               end
             end
-            if not neo_tree_open then
-              pcall(vim.cmd, "Neotree show")
-            end
-          end, 200)
+          end, 300)  -- Aumentado delay para dar tiempo a auto-session
         end,
       })
     end,
@@ -202,8 +207,65 @@ require("lazy").setup({
   "hrsh7th/cmp-path",
   "hrsh7th/cmp-cmdline",
 
-  -- FORMATEO
-  "mhartington/formatter.nvim",
+  -- FORMATEO Y LINTING (none-ls)
+  {
+    "nvimtools/none-ls.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local null_ls = require("null-ls")
+      null_ls.setup({
+        sources = {
+          -- JavaScript/TypeScript
+          null_ls.builtins.formatting.prettier,
+          null_ls.builtins.diagnostics.eslint,
+          null_ls.builtins.code_actions.eslint,
+
+          -- PHP (requiere phpcs y phpcbf instalados: composer global require squizlabs/php_codesniffer)
+          null_ls.builtins.formatting.phpcbf,
+          null_ls.builtins.diagnostics.phpcs,
+
+          -- Python (requiere black y pylint: pip install black pylint)
+          null_ls.builtins.formatting.black,
+          null_ls.builtins.diagnostics.pylint,
+
+          -- Go (requiere gofmt - viene con Go)
+          null_ls.builtins.formatting.gofmt,
+
+          -- Shell (requiere shfmt: brew install shfmt)
+          null_ls.builtins.formatting.shfmt,
+        },
+      })
+
+      -- Format on save
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        callback = function()
+          vim.lsp.buf.format({ async = false })
+        end,
+      })
+    end,
+  },
+
+  -- HIGHLIGHT DE REFERENCIAS (resalta variables/funciones bajo cursor)
+  {
+    "RRethy/vim-illuminate",
+    config = function()
+      require("illuminate").configure({
+        providers = {
+          "lsp",         -- Usa LSP para referencias semánticas
+          "treesitter",  -- Fallback a treesitter
+          "regex",       -- Fallback a regex
+        },
+        delay = 100,  -- Delay en ms antes de resaltar
+        filetypes_denylist = {
+          "neo-tree",
+          "TelescopePrompt",
+          "lazy",
+        },
+        under_cursor = true,  -- Resalta también la palabra bajo el cursor
+        min_count_to_highlight = 2,  -- Mínimo 2 referencias para resaltar
+      })
+    end,
+  },
 
   -- COMENTARIOS
   {
@@ -281,10 +343,33 @@ require("lazy").setup({
         -- Hook para restaurar Neo-tree y filetypes después de cargar sesión
         post_restore_cmds = {
           function()
+            -- Marcar que auto-session está restaurando
+            vim.g.neotree_session_restored = true
+
+            -- Restaurar filetypes
             vim.cmd("filetype detect")
             vim.cmd("doautocmd BufRead")
+
+            -- Abrir neo-tree después de un delay para evitar conflictos
+            vim.defer_fn(function()
+              -- Verificar que haya ventanas válidas antes de abrir neo-tree
+              local has_valid_window = false
+              for _, win in ipairs(vim.api.nvim_list_wins()) do
+                if vim.api.nvim_win_is_valid(win) then
+                  local buf = vim.api.nvim_win_get_buf(win)
+                  local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+                  if ft ~= "neo-tree" then
+                    has_valid_window = true
+                    break
+                  end
+                end
+              end
+
+              if has_valid_window then
+                pcall(vim.cmd, "Neotree show")
+              end
+            end, 100)
           end,
-          "Neotree show",
         },
       })
     end,
