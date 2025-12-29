@@ -516,8 +516,9 @@ vim.keymap.set("n", "<leader>tt", ":terminal<CR>", { desc = "Terminal en buffer 
 -- =======================
 vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find files (respeta .gitignore)" })
 vim.keymap.set("n", "<leader>fa", ":Telescope find_files no_ignore=true<CR>", { desc = "Find ALL files (incluye .env, .tfvars)" })
-vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>")
-vim.keymap.set("n", "<leader>b", ":Telescope buffers<CR>")
+vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>", { desc = "Live grep (buscar texto)" })
+vim.keymap.set("n", "<leader>b", ":Telescope buffers<CR>", { desc = "Ver buffers" })
+vim.keymap.set("n", "<leader>D", ":Telescope diagnostics<CR>", { desc = "Ver todos los diagnósticos" })
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
 
 -- =======================

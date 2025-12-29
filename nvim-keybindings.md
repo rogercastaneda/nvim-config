@@ -12,6 +12,7 @@
 | `<Space>fa` | Buscar **TODOS** los archivos (incluye `.env`, `.tfvars`) |
 | `<Space>g` | Buscar texto dentro de archivos (live grep) |
 | `<Space>b` | Ver buffers abiertos |
+| `<Space>D` | Ver **todos** los diagnósticos (errores/warnings) |
 | `:Telescope keymaps` | Ver todos los atajos disponibles |
 
 ### Búsqueda de Texto con Filtro de Carpeta
@@ -175,8 +176,15 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `K` | Ver mensaje de error completo (sobre línea con E/W) |
 
 **Ver todos los diagnósticos:**
-- `:Telescope diagnostics` → Lista todos los errores/warnings del proyecto
-- Desde Telescope: `Enter` para ir al error, `Ctrl+v` para abrir en split
+| Atajo | Descripción |
+|-------|-------------|
+| `<Space>D` | Ver **todos** los diagnósticos del proyecto (atajo rápido) |
+| `:Telescope diagnostics` | Comando completo (equivalente) |
+
+**Desde lista de diagnósticos:**
+- `Enter` - Ir al error
+- `Ctrl+v` - Abrir error en split vertical
+- `Ctrl+x` - Abrir error en split horizontal
 
 **Ejemplo**: Si ves `E` al lado de la línea 66, significa que ESLint o TypeScript detectó un error en esa línea.
 
