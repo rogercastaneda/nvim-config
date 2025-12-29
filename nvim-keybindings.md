@@ -156,16 +156,29 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 - `Ctrl+w v` luego `Enter` - Abrir en split vertical
 - `Ctrl+w s` luego `Enter` - Abrir en split horizontal
 
-### Navegación entre diagnósticos
+### Diagnósticos (Errores y Warnings)
+
+**Marcas en el margen izquierdo:**
+| Marca | Significado | Color |
+|-------|-------------|-------|
+| **E** | Error (debe corregirse) | Rojo |
+| **W** | Warning (advertencia) | Amarillo |
+| **I** | Info (información) | Azul |
+| **H** | Hint (sugerencia) | Gris |
+
+**Navegar entre diagnósticos:**
 | Atajo | Descripción |
 |-------|-------------|
 | `]d` | Ir al siguiente diagnóstico (error/warning) |
 | `[d` | Ir al diagnóstico anterior |
 | `<Space>d` | Mostrar diagnóstico completo en float |
+| `K` | Ver mensaje de error completo (sobre línea con E/W) |
 
-**Ver diagnósticos:**
-- `K` sobre línea con error → Ver mensaje completo
-- `:Telescope diagnostics` → Ver todos los diagnósticos del proyecto
+**Ver todos los diagnósticos:**
+- `:Telescope diagnostics` → Lista todos los errores/warnings del proyecto
+- Desde Telescope: `Enter` para ir al error, `Ctrl+v` para abrir en split
+
+**Ejemplo**: Si ves `E` al lado de la línea 66, significa que ESLint o TypeScript detectó un error en esa línea.
 
 ### Refactorización
 | Atajo | Descripción |
