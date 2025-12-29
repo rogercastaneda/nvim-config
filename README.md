@@ -215,7 +215,7 @@ return userName;          // ← se resalta automáticamente
 |--------|-------------|-----|
 | **lazy.nvim** | Package manager | Gestión automática de plugins |
 | **catppuccin** | Theme/colorscheme | Tema visual (flavor: frappe) |
-| **neo-tree** | File explorer | Navegación de archivos lateral |
+| **nvim-tree** | File explorer | Navegación de archivos con sistema de bookmarks |
 | **telescope** | Fuzzy finder | Búsqueda de archivos y texto |
 | **treesitter** | Syntax highlighting | Resaltado de sintaxis mejorado |
 | **typst.vim** | Typst support | Soporte para lenguaje Typst |

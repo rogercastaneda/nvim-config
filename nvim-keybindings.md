@@ -46,29 +46,41 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 
 ---
 
-## 🌳 Explorador de Archivos (Neotree)
+## 🌳 Explorador de Archivos (nvim-tree)
 
 ### Abrir/Cerrar
 | Atajo | Descripción |
 |-------|-------------|
-| `<Space>e` | Abrir/cerrar Neotree (explorador lateral) |
+| `<Space>e` | Abrir/cerrar nvim-tree (explorador lateral) |
 
-### Operaciones de Archivos (dentro de Neotree)
+### Operaciones de Archivos (dentro de nvim-tree)
 | Atajo | Descripción |
 |-------|-------------|
 | `a` | Crear nuevo archivo/carpeta |
 | `d` | Eliminar archivo/carpeta |
 | `r` | Renombrar archivo/carpeta |
-| `y` | Copiar (yank) archivo/carpeta |
-| `x` | Cortar archivo/carpeta |
-| `p` | Pegar archivo/carpeta |
-| `m` | Marcar/desmarcar archivo (para operaciones múltiples) |
-| `Enter` o `<Space>` | Abrir archivo/expandir carpeta |
-| `-` | Cerrar folder actual |
-| `<Backspace>` | Ir al directorio padre |
-| `.` | Establecer directorio como root |
+| `c` | Copiar archivo (pide destino) |
+| `x` | Cortar archivo |
+| `p` | Pegar archivo |
+| `m` | Marcar/desmarcar archivo (bookmark) |
+| **`bmc`** | **Copiar archivos marcados al clipboard** |
+| `bmv` | Mover archivos marcados |
+| `Enter` | Abrir archivo/expandir carpeta |
+| `-` | Ir al directorio padre |
+| `P` | Ir al directorio padre |
 | `H` | Mostrar/ocultar archivos ocultos |
+| `R` | Refrescar árbol |
 | `?` | Ver todos los atajos disponibles |
+
+### Flujo para copiar múltiples archivos
+```
+1. m      → Marca archivo1
+2. ↓ m    → Marca archivo2
+3. ↓ m    → Marca archivo3
+4. bmc    → Copia los 3 al clipboard (verás notificación)
+5. Navega a carpeta destino
+6. p      → Pega los 3 archivos
+```
 
 ---
 
@@ -373,7 +385,7 @@ O cierra y reabre Neovim.
 - **Lazy.nvim** - Package manager
 - **Catppuccin** - Theme (frappe flavor)
 - **Telescope** - Fuzzy finder
-- **Neo-tree** - File explorer
+- **nvim-tree** - File explorer con bookmarks
 - **Treesitter** - Syntax highlighting
 - **Typst.vim** - Typst language support
 - **Mason** - LSP installer
@@ -400,4 +412,4 @@ O cierra y reabre Neovim.
 ---
 
 **Archivo de configuración:** `~/.config/nvim/init.lua`
-**Fecha actualización:** 2025-12-24
+**Fecha actualización:** 2025-12-29

@@ -70,55 +70,101 @@ require("lazy").setup({
 
   -- FILE TREE (EXPLORADOR)
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", "MunifTanjim/nui.nvim" },
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       -- Desactivar netrw para evitar conflictos
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
 
-      require("neo-tree").setup({
-        close_if_last_window = true,
-        window = {
-          position = "left",
+      -- Función custom para copiar archivos marcados (bookmarked)
+      local function copy_bookmarked()
+        local api = require("nvim-tree.api")
+        local marks = api.marks.list()
+
+        if #marks == 0 then
+          vim.notify("No hay archivos marcados", vim.log.levels.WARN)
+          return
+        end
+
+        -- Copiar archivos marcados al clipboard de nvim-tree
+        for _, node in ipairs(marks) do
+          api.fs.copy.node(node)
+        end
+
+        -- Limpiar marcas después de copiar
+        api.marks.clear()
+
+        vim.notify(string.format("Copiados %d archivo(s) al clipboard", #marks), vim.log.levels.INFO)
+      end
+
+      -- Callback para agregar keymaps custom
+      local function on_attach(bufnr)
+        local api = require("nvim-tree.api")
+
+        -- Usar los defaults de nvim-tree
+        api.config.mappings.default_on_attach(bufnr)
+
+        -- Agregar custom mapping: bmc para copiar bookmarks
+        vim.keymap.set('n', 'bmc', copy_bookmarked, {
+          desc = "Copy bookmarked files",
+          buffer = bufnr,
+          noremap = true,
+          silent = true,
+        })
+      end
+
+      require("nvim-tree").setup({
+        sort = {
+          sorter = "case_sensitive",
+        },
+        view = {
           width = 35,
-          mappings = {
-            ["-"] = "close_node",
-            ["<bs>"] = "navigate_up",
-            ["."] = "set_root",
-            ["H"] = "toggle_hidden",
+          side = "left",
+        },
+        renderer = {
+          group_empty = true,
+          highlight_opened_files = "name",
+        },
+        filters = {
+          dotfiles = false,  -- Mostrar archivos ocultos por defecto
+        },
+        update_focused_file = {
+          enable = true,      -- Seguir archivo actual
+          update_root = false,
+        },
+        actions = {
+          open_file = {
+            quit_on_open = false,
           },
         },
-        filesystem = {
-          hijack_netrw_behavior = "disabled",
-          follow_current_file = { enabled = true },
-        },
+        on_attach = on_attach,  -- Registrar custom keymaps
       })
 
       -- Variable global para coordinar con auto-session
-      vim.g.neotree_session_restored = false
+      vim.g.nvimtree_session_restored = false
 
-      -- Neo-tree se abre via auto-session post_restore_cmds
+      -- nvim-tree se abre via auto-session post_restore_cmds
       -- Para directorios sin sesión guardada:
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
           vim.defer_fn(function()
             -- Solo abrir si no hay sesión restaurada por auto-session
-            if not vim.g.neotree_session_restored then
-              local neo_tree_open = false
+            if not vim.g.nvimtree_session_restored then
+              local nvim_tree_open = false
               for _, win in ipairs(vim.api.nvim_list_wins()) do
                 local buf = vim.api.nvim_win_get_buf(win)
                 local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-                if ft == "neo-tree" then
-                  neo_tree_open = true
+                if ft == "NvimTree" then
+                  nvim_tree_open = true
                   break
                 end
               end
-              if not neo_tree_open then
-                pcall(vim.cmd, "Neotree show")
+              if not nvim_tree_open then
+                pcall(vim.cmd, "NvimTreeOpen")
               end
             end
-          end, 300)  -- Aumentado delay para dar tiempo a auto-session
+          end, 300)
         end,
       })
     end,
@@ -336,29 +382,29 @@ require("lazy").setup({
         session_lens = {
           load_on_setup = true,
         },
-        -- Cerrar Neo-tree antes de guardar sesión para evitar conflictos
+        -- Cerrar nvim-tree antes de guardar sesión para evitar conflictos
         pre_save_cmds = {
-          "Neotree close",
+          "NvimTreeClose",
         },
-        -- Hook para restaurar Neo-tree y filetypes después de cargar sesión
+        -- Hook para restaurar nvim-tree y filetypes después de cargar sesión
         post_restore_cmds = {
           function()
             -- Marcar que auto-session está restaurando
-            vim.g.neotree_session_restored = true
+            vim.g.nvimtree_session_restored = true
 
             -- Restaurar filetypes
             vim.cmd("filetype detect")
             vim.cmd("doautocmd BufRead")
 
-            -- Abrir neo-tree después de un delay para evitar conflictos
+            -- Abrir nvim-tree después de un delay para evitar conflictos
             vim.defer_fn(function()
-              -- Verificar que haya ventanas válidas antes de abrir neo-tree
+              -- Verificar que haya ventanas válidas antes de abrir nvim-tree
               local has_valid_window = false
               for _, win in ipairs(vim.api.nvim_list_wins()) do
                 if vim.api.nvim_win_is_valid(win) then
                   local buf = vim.api.nvim_win_get_buf(win)
                   local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-                  if ft ~= "neo-tree" then
+                  if ft ~= "NvimTree" then
                     has_valid_window = true
                     break
                   end
@@ -366,7 +412,7 @@ require("lazy").setup({
               end
 
               if has_valid_window then
-                pcall(vim.cmd, "Neotree show")
+                pcall(vim.cmd, "NvimTreeOpen")
               end
             end, 100)
           end,
@@ -472,7 +518,7 @@ vim.keymap.set("n", "<leader>f", ":Telescope find_files<CR>", { desc = "Find fil
 vim.keymap.set("n", "<leader>fa", ":Telescope find_files no_ignore=true<CR>", { desc = "Find ALL files (incluye .env, .tfvars)" })
 vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>")
 vim.keymap.set("n", "<leader>b", ":Telescope buffers<CR>")
-vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>")
+vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
 
 -- =======================
 --   KEYMAPS AI SUGGESTIONS
