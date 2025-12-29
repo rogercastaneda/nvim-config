@@ -279,6 +279,44 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `:wq` | Guardar y salir |
 | `ZZ` | Guardar y salir (atajo) |
 
+### Selección y Operaciones de Texto
+
+**Seleccionar palabras:**
+| Atajo | Descripción |
+|-------|-------------|
+| `viw` | Seleccionar palabra bajo el cursor (inner word, sin espacios) |
+| `vaw` | Seleccionar palabra + espacios adyacentes (a word) |
+| `v` + `w` | Modo visual + seleccionar hasta siguiente palabra |
+| `v` + `e` | Modo visual + seleccionar hasta final de palabra |
+
+**Operaciones directas (sin modo visual):**
+| Atajo | Descripción |
+|-------|-------------|
+| `yiw` | Copiar palabra bajo el cursor |
+| `yaw` | Copiar palabra + espacios |
+| `diw` | Borrar palabra bajo el cursor |
+| `daw` | Borrar palabra + espacios |
+| `ciw` | Cambiar palabra (borrar y entrar en insert mode) |
+| `caw` | Cambiar palabra + espacios |
+
+**Copiar/Borrar líneas:**
+| Atajo | Descripción |
+|-------|-------------|
+| `yy` | Copiar línea completa |
+| `3yy` | Copiar 3 líneas (desde la actual) |
+| `dd` | Borrar línea completa |
+| `3dd` | Borrar 3 líneas |
+| `V` + `↓↓` + `y` | Seleccionar múltiples líneas y copiar |
+
+**Diferencia `iw` vs `aw`:**
+```
+Texto: "hello world"
+       ^cursor aquí
+
+viw → Selecciona: "world"
+vaw → Selecciona: " world" (incluye espacio)
+```
+
 ### Manejar Archivos
 | Comando | Descripción |
 |---------|-------------|
@@ -286,8 +324,8 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `:saveas nuevo.txt` | Guardar como nuevo nombre |
 | `:!mv % nuevo.txt` | Renombrar archivo actual |
 | `:!rm %` | Eliminar archivo actual |
-| **Neotree `r`** | Renombrar (más fácil) |
-| **Neotree `d`** | Eliminar (más fácil) |
+| **nvim-tree `r`** | Renombrar (más fácil, abre nvim-tree con `<Space>e`) |
+| **nvim-tree `d`** | Eliminar (más fácil, abre nvim-tree con `<Space>e`) |
 
 ### Navegación
 | Atajo | Descripción |
