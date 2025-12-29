@@ -508,13 +508,18 @@ local function setup_lsp(server)
 end
 
 -- Registra servidores
-setup_lsp("ts_ls")
-setup_lsp("intelephense")
-setup_lsp("bashls")
-setup_lsp("yamlls")
-setup_lsp("gopls")
-setup_lsp("tinymist")
--- si quieres más activalos igual: setup_lsp("html") setup_lsp("pyright") etc
+setup_lsp("ts_ls")           -- JavaScript/TypeScript
+setup_lsp("intelephense")    -- PHP (principal)
+setup_lsp("phpactor")        -- PHP (alternativo)
+setup_lsp("html")            -- HTML
+setup_lsp("cssls")           -- CSS/SCSS
+setup_lsp("bashls")          -- Bash/Shell
+setup_lsp("yamlls")          -- YAML
+setup_lsp("terraformls")     -- Terraform
+setup_lsp("dockerls")        -- Docker
+setup_lsp("pyright")         -- Python
+setup_lsp("gopls")           -- Go
+setup_lsp("tinymist")        -- Typst
 
 -- =======================
 --    AUTOCOMPLETE CMP
