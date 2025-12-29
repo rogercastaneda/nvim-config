@@ -53,6 +53,14 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 |-------|-------------|
 | `<Space>e` | Abrir/cerrar nvim-tree (explorador lateral) |
 
+### Abrir Archivos (dentro de nvim-tree)
+| Atajo | Descripción |
+|-------|-------------|
+| `Enter` | Abrir archivo/expandir carpeta en buffer actual |
+| `Ctrl+v` | Abrir archivo en split **vertical** |
+| `Ctrl+x` | Abrir archivo en split **horizontal** |
+| `Ctrl+t` | Abrir archivo en nueva **tab** |
+
 ### Operaciones de Archivos (dentro de nvim-tree)
 | Atajo | Descripción |
 |-------|-------------|
@@ -65,7 +73,6 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `m` | Marcar/desmarcar archivo (bookmark) |
 | **`bmc`** | **Copiar archivos marcados al clipboard** |
 | `bmv` | Mover archivos marcados |
-| `Enter` | Abrir archivo/expandir carpeta |
 | `-` | Ir al directorio padre |
 | `P` | Ir al directorio padre |
 | `H` | Mostrar/ocultar archivos ocultos |
@@ -138,18 +145,33 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | Atajo | Descripción |
 |-------|-------------|
 | `gd` | Ir a definición (mismo buffer) |
-| `<Space>gd` | Ir a definición (split vertical) |
+| `<Space>gd` | Ir a definición en split **vertical** |
 | `gi` | Ir a implementación |
-| `gr` | Ver referencias |
+| `gr` | Ver referencias (abre lista) |
 | `K` | Mostrar documentación (hover) |
 | `<Space>q` | Cerrar lista de referencias/quickfix |
+
+**Desde lista de referencias (después de `gr`):**
+- `Enter` - Abrir en buffer actual
+- `Ctrl+w v` luego `Enter` - Abrir en split vertical
+- `Ctrl+w s` luego `Enter` - Abrir en split horizontal
+
+### Navegación entre diagnósticos
+| Atajo | Descripción |
+|-------|-------------|
+| `]d` | Ir al siguiente diagnóstico (error/warning) |
+| `[d` | Ir al diagnóstico anterior |
+| `<Space>d` | Mostrar diagnóstico completo en float |
+
+**Ver diagnósticos:**
+- `K` sobre línea con error → Ver mensaje completo
+- `:Telescope diagnostics` → Ver todos los diagnósticos del proyecto
 
 ### Refactorización
 | Atajo | Descripción |
 |-------|-------------|
 | `<Space>rn` | Renombrar símbolo |
-| `<Space>a` | Acciones de código (code actions) |
-| `<Space>d` | Mostrar diagnósticos (errores/warnings) |
+| `<Space>a` | Acciones de código (code actions, ESLint fixes) |
 
 **Language Servers instalados:**
 - TypeScript/JavaScript (ts_ls)
@@ -442,10 +464,12 @@ O cierra y reabre Neovim.
 
 1. **Which-key:** Presiona `<Space>` y espera 0.5s para ver comandos disponibles
 2. **Telescope:** Usa fuzzy search - no necesitas escribir el nombre completo
-3. **Terminal:** `Esc` para salir, luego navegación normal de Neovim
-4. **Splits:** `Ctrl+w o` para enfocarte en uno solo
-5. **LSP:** `K` dos veces para entrar al hover popup
-6. **Comentarios:** Funcionan en cualquier lenguaje automáticamente
+3. **Abrir en splits:** `Ctrl+v` (vertical) y `Ctrl+x` (horizontal) funcionan en Telescope, nvim-tree y listas de referencias
+4. **Terminal:** `Esc` para salir, luego navegación normal de Neovim
+5. **Splits:** `Ctrl+w o` para enfocarte en uno solo
+6. **LSP:** `K` dos veces para entrar al hover popup
+7. **Comentarios:** Funcionan en cualquier lenguaje automáticamente
+8. **Diagnósticos:** `]d` y `[d` para navegar entre errores/warnings, `K` para ver detalles
 
 ---
 
