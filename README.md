@@ -251,6 +251,7 @@ Instalados automáticamente via Mason:
 | pyright | Python | .py |
 | gopls | Go | .go |
 | tinymist | Typst | .typst |
+| tailwindcss | Tailwind CSS | .html, .jsx, .tsx, .vue, .svelte |
 
 ---
 

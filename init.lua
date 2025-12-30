@@ -551,7 +551,8 @@ require("mason-lspconfig").setup({
     "html","cssls","bashls","yamlls",
     "dockerls","terraformls","pyright",
     "gopls",  -- Go Language Server
-    "tinymist"  -- Typst Language Server
+    "tinymist",  -- Typst Language Server
+    "tailwindcss"  -- Tailwind CSS Language Server
   }
 })
 
@@ -575,6 +576,7 @@ setup_lsp("dockerls")        -- Docker
 setup_lsp("pyright")         -- Python
 setup_lsp("gopls")           -- Go
 setup_lsp("tinymist")        -- Typst
+setup_lsp("tailwindcss")     -- Tailwind CSS
 
 -- =======================
 --    AUTOCOMPLETE CMP
