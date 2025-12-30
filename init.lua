@@ -136,6 +136,9 @@ require("lazy").setup({
         actions = {
           open_file = {
             quit_on_open = false,
+            window_picker = {
+              enable = false,  -- Desactiva "Pick window" - abre en última ventana activa
+            },
           },
         },
         on_attach = on_attach,  -- Registrar custom keymaps
@@ -493,11 +496,16 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
 
--- Redimensionar splits
-vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
-vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
-vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
-vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
+-- Redimensionar splits (detecta OS)
+-- macOS usa Option+Arrow (Ctrl+Arrow está ocupado por Mission Control)
+-- Linux/Windows usa Ctrl+Arrow
+local is_mac = vim.fn.has("macunix") == 1 or vim.fn.has("mac") == 1
+local resize_mod = is_mac and "A" or "C"  -- A = Alt/Option, C = Ctrl
+
+vim.keymap.set("n", "<" .. resize_mod .. "-Up>", ":resize +2<CR>", { desc = "Increase window height" })
+vim.keymap.set("n", "<" .. resize_mod .. "-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
+vim.keymap.set("n", "<" .. resize_mod .. "-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
+vim.keymap.set("n", "<" .. resize_mod .. "-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
 
 -- Terminal mode
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })

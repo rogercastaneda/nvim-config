@@ -103,12 +103,24 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `Ctrl+l` | Ir al split derecho |
 
 ### Redimensionar splits
+
+**Linux/Windows:**
 | Atajo | Descripción |
 |-------|-------------|
 | `Ctrl+↑` | Aumentar altura |
 | `Ctrl+↓` | Disminuir altura |
 | `Ctrl+←` | Disminuir ancho |
 | `Ctrl+→` | Aumentar ancho |
+
+**macOS:**
+| Atajo | Descripción |
+|-------|-------------|
+| `Option+↑` | Aumentar altura |
+| `Option+↓` | Disminuir altura |
+| `Option+←` | Disminuir ancho |
+| `Option+→` | Aumentar ancho |
+
+> **Nota macOS**: Se usa `Option` (Alt) en lugar de `Ctrl` porque macOS usa `Ctrl+Arrow` para Mission Control.
 
 ### Crear y cerrar splits
 | Comando | Descripción |
