@@ -289,6 +289,7 @@ none-ls proporciona formateo automático y validación de código. Detecta autom
 | Funcionalidad | Descripción |
 |---------------|-------------|
 | **Clipboard del sistema** | Copiar/pegar integrado con el OS |
+| **Line wrapping** | Wrapping visual de líneas largas (activado por defecto) |
 | **Folding** | Plegado de código por indentación |
 | **Splits** | Navegación y redimensionado de ventanas |
 | **Terminal integrado** | Terminal dentro de Neovim |

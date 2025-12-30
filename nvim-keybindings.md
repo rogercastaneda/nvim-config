@@ -397,6 +397,29 @@ vaw → Selecciona: " world" (incluye espacio)
 
 ---
 
+## 📏 Wrapping de Líneas
+
+**✅ Activado por defecto** - Las líneas largas se envuelven visualmente sin modificar el archivo.
+
+### Comportamiento
+- `wrap = true` → Las líneas largas se muestran en múltiples líneas visuales
+- `linebreak = true` → El wrap ocurre en palabras completas, no en medio de palabras
+- `breakindent = true` → Mantiene la indentación en líneas wrapped
+
+### Comandos Temporales
+
+| Comando | Descripción |
+|---------|-------------|
+| `:set wrap` | Activar wrapping de líneas largas |
+| `:set nowrap` | Desactivar wrapping (mostrar línea completa horizontal) |
+| `:set wrap!` | Toggle (alternar entre activado/desactivado) |
+
+**Uso práctico:**
+- **Activado** (default): Ideal para leer código, documentación, archivos largos
+- **Desactivado**: Útil para ver estructura horizontal de código o tablas
+
+---
+
 ## 📋 Clipboard (Portapapeles del Sistema)
 
 **✅ Configurado para usar clipboard del sistema automáticamente!**

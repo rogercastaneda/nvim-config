@@ -7,7 +7,9 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.wrap = false
+vim.opt.wrap = true  -- Activar wrapping de líneas largas
+vim.opt.linebreak = true  -- Wrap en palabras completas, no en medio de palabras
+vim.opt.breakindent = true  -- Mantener indentación en líneas wrapped
 vim.opt.clipboard = "unnamedplus"  -- Usar clipboard del sistema
 vim.opt.mouse = "a"  -- Habilitar mouse
 
