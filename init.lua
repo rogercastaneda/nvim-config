@@ -13,6 +13,14 @@ vim.opt.breakindent = true  -- Mantener indentación en líneas wrapped
 vim.opt.clipboard = "unnamedplus"  -- Usar clipboard del sistema
 vim.opt.mouse = "a"  -- Habilitar mouse
 
+-- Balance automático de ventanas
+vim.opt.equalalways = true  -- Mantener ventanas del mismo tamaño
+vim.opt.eadirection = "both"  -- Igualar en ambas direcciones (vertical y horizontal)
+vim.opt.winwidth = 10  -- Ancho mínimo de ventana
+vim.opt.winminwidth = 5  -- Ancho mínimo absoluto
+vim.opt.sidescroll = 1  -- Scroll horizontal suave
+vim.opt.sidescrolloff = 8  -- Mantener contexto al hacer scroll horizontal
+
 -- Folding (plegado de código)
 vim.opt.foldmethod = "indent"  -- Plegar basado en indentación
 vim.opt.foldlevel = 99  -- Abrir todos los folds por defecto
@@ -135,12 +143,18 @@ require("lazy").setup({
           enable = true,      -- Seguir archivo actual
           update_root = false,
         },
+        sync_root_with_cwd = false,  -- No cambiar raíz de nvim-tree cuando cambia el cwd
+        respect_buf_cwd = false,     -- No respetar el cwd del buffer
         actions = {
           open_file = {
             quit_on_open = false,
             window_picker = {
               enable = false,  -- Desactiva "Pick window" - abre en última ventana activa
             },
+          },
+          change_dir = {
+            enable = false,  -- Deshabilitar cambio de directorio al navegar
+            global = false,
           },
         },
         on_attach = on_attach,  -- Registrar custom keymaps
@@ -509,6 +523,9 @@ vim.keymap.set("n", "<" .. resize_mod .. "-Down>", ":resize -2<CR>", { desc = "D
 vim.keymap.set("n", "<" .. resize_mod .. "-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
 vim.keymap.set("n", "<" .. resize_mod .. "-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
 
+-- Rebalancear ventanas manualmente
+vim.keymap.set("n", "<leader>=", "<C-w>=", { desc = "Igualar tamaño de ventanas" })
+
 -- Terminal mode
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Terminal: move to left split" })
@@ -530,6 +547,13 @@ vim.keymap.set("n", "<leader>g", ":Telescope live_grep<CR>", { desc = "Live grep
 vim.keymap.set("n", "<leader>b", ":Telescope buffers<CR>", { desc = "Ver buffers" })
 vim.keymap.set("n", "<leader>D", ":Telescope diagnostics<CR>", { desc = "Ver todos los diagnósticos" })
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
+
+-- Mostrar directorio actual
+vim.keymap.set("n", "<leader>pwd", function()
+  local cwd = vim.fn.getcwd()
+  vim.notify("Directorio actual: " .. cwd, vim.log.levels.INFO)
+  print(cwd)
+end, { desc = "Mostrar directorio actual" })
 
 -- =======================
 --   KEYMAPS AI SUGGESTIONS
