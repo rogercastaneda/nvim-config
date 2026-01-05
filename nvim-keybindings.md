@@ -166,8 +166,9 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 
 **Desde lista de referencias (después de `gr`):**
 - `Enter` - Abrir en buffer actual
-- `Ctrl+w v` luego `Enter` - Abrir en split vertical
-- `Ctrl+w s` luego `Enter` - Abrir en split horizontal
+- `Ctrl+v` - Abrir en split vertical
+- `Ctrl+x` - Abrir en split horizontal
+- `Ctrl+t` - Abrir en nueva pestaña
 
 ### Diagnósticos (Errores y Warnings)
 
@@ -194,9 +195,10 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `:Telescope diagnostics` | Comando completo (equivalente) |
 
 **Desde lista de diagnósticos:**
-- `Enter` - Ir al error
+- `Enter` - Ir al error en buffer actual
 - `Ctrl+v` - Abrir error en split vertical
 - `Ctrl+x` - Abrir error en split horizontal
+- `Ctrl+t` - Abrir error en nueva pestaña
 
 **Ejemplo**: Si ves `E` al lado de la línea 66, significa que ESLint o TypeScript detectó un error en esa línea.
 

@@ -643,3 +643,40 @@ vim.keymap.set("n", "<leader>q", function()
   vim.cmd("cclose")
   vim.cmd("lclose")
 end, { desc = "Close quickfix/location list" })
+
+-- =======================
+--   KEYBINDINGS PARA QUICKFIX/LOCATION LIST (lista de referencias)
+-- =======================
+-- Configurar keybindings cuando se abre una ventana de quickfix o location list
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    local opts = { buffer = true, silent = true }
+
+    -- Ctrl+v para abrir en split vertical
+    vim.keymap.set("n", "<C-v>", function()
+      local line = vim.fn.line(".")
+      vim.cmd("wincmd p")  -- Volver a la ventana anterior
+      vim.cmd("vsplit")
+      vim.cmd("wincmd p")  -- Volver a quickfix
+      vim.cmd(line .. "cc") -- Abrir el item
+    end, vim.tbl_extend("force", opts, { desc = "Open in vertical split" }))
+
+    -- Ctrl+x para abrir en split horizontal
+    vim.keymap.set("n", "<C-x>", function()
+      local line = vim.fn.line(".")
+      vim.cmd("wincmd p")  -- Volver a la ventana anterior
+      vim.cmd("split")
+      vim.cmd("wincmd p")  -- Volver a quickfix
+      vim.cmd(line .. "cc") -- Abrir el item
+    end, vim.tbl_extend("force", opts, { desc = "Open in horizontal split" }))
+
+    -- Ctrl+t para abrir en nueva pestaña
+    vim.keymap.set("n", "<C-t>", function()
+      local line = vim.fn.line(".")
+      vim.cmd("tabnew")
+      vim.cmd("wincmd p")  -- Volver a quickfix
+      vim.cmd(line .. "cc") -- Abrir el item
+    end, vim.tbl_extend("force", opts, { desc = "Open in new tab" }))
+  end,
+})
