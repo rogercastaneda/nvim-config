@@ -135,6 +135,27 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 
 ---
 
+## 📑 Tabs (Pestañas)
+
+### Navegación entre tabs
+| Atajo | Descripción |
+|-------|-------------|
+| `<Space>tn` | Siguiente tab |
+| `<Space>tp` | Tab anterior |
+| `Alt+1` a `Alt+9` | Ir directamente a tab 1-9 |
+| `gt` | Siguiente tab (atajo nativo) |
+| `gT` | Tab anterior (atajo nativo) |
+
+### Gestión de tabs
+| Atajo | Descripción |
+|-------|-------------|
+| `<Space>tt` | Nueva tab vacía |
+| `<Space>tc` | Cerrar tab actual |
+| `<Space>to` | Cerrar todas las otras tabs (solo mantener actual) |
+| `Ctrl+t` | Abrir archivo en nueva tab (desde nvim-tree o Telescope) |
+
+---
+
 ## 💻 Terminal
 
 ### Abrir terminal
@@ -160,15 +181,15 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `gd` | Ir a definición (mismo buffer) |
 | `<Space>gd` | Ir a definición en split **vertical** |
 | `gi` | Ir a implementación |
-| `gr` | Ver referencias (abre lista) |
+| `gr` | Ver referencias en **modal flotante** (Telescope) |
 | `K` | Mostrar documentación (hover) |
 | `<Space>q` | Cerrar lista de referencias/quickfix |
 
-**Desde lista de referencias (después de `gr`):**
-- `Enter` - Abrir en buffer actual
-- `Ctrl+v` - Abrir en split vertical
-- `Ctrl+x` - Abrir en split horizontal
-- `Ctrl+t` - Abrir en nueva pestaña
+**Modal de referencias (después de `gr`):**
+- **Navegación**: `j/k` o flechas para moverte entre referencias
+- **Búsqueda**: Escribe para filtrar resultados dentro del modal
+- **Enter**: Abre la referencia en **split vertical a la derecha**
+- **Esc**: Cerrar modal sin seleccionar
 
 ### Diagnósticos (Errores y Warnings)
 
@@ -532,4 +553,4 @@ O cierra y reabre Neovim.
 ---
 
 **Archivo de configuración:** `~/.config/nvim/init.lua`
-**Fecha actualización:** 2025-12-29
+**Fecha actualización:** 2026-01-07

@@ -512,6 +512,21 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to top split" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
 
+-- =======================
+--   KEYMAPS TABS
+-- =======================
+-- Navegación entre tabs
+vim.keymap.set("n", "<leader>tn", ":tabnext<CR>", { desc = "Siguiente tab" })
+vim.keymap.set("n", "<leader>tp", ":tabprevious<CR>", { desc = "Tab anterior" })
+vim.keymap.set("n", "<leader>tc", ":tabclose<CR>", { desc = "Cerrar tab actual" })
+vim.keymap.set("n", "<leader>to", ":tabonly<CR>", { desc = "Cerrar todas las otras tabs" })
+vim.keymap.set("n", "<leader>tt", ":tabnew<CR>", { desc = "Nueva tab" })
+
+-- Ir a tab específica con Alt+número (como en navegadores)
+for i = 1, 9 do
+  vim.keymap.set("n", "<A-" .. i .. ">", i .. "gt", { desc = "Ir a tab " .. i })
+end
+
 -- Redimensionar splits (detecta OS)
 -- macOS usa Option+Arrow (Ctrl+Arrow está ocupado por Mission Control)
 -- Linux/Windows usa Ctrl+Arrow
@@ -626,7 +641,52 @@ cmp.setup({
 -- =======================
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
+
+-- LSP References en modal flotante con Telescope (abre en split vertical)
+vim.keymap.set("n", "gr", function()
+  require("telescope.builtin").lsp_references({
+    show_line = false,  -- Ocultar preview de línea en resultados
+    include_declaration = false,  -- No mostrar la declaración, solo referencias
+    layout_strategy = "vertical",  -- Layout vertical para mejor visualización
+    layout_config = {
+      height = 0.8,
+      width = 0.7,
+      prompt_position = "top",
+    },
+    -- Al presionar Enter, abrir en vsplit a la derecha
+    attach_mappings = function(_, map)
+      local actions = require("telescope.actions")
+
+      -- Enter abre en vsplit vertical a la derecha
+      map("i", "<CR>", function(prompt_bufnr)
+        local action_state = require("telescope.actions.state")
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+
+        -- Abrir split vertical a la derecha y saltar al archivo
+        vim.cmd("vsplit")
+        vim.cmd("wincmd l")  -- Moverse al split derecho
+        vim.api.nvim_win_set_buf(0, entry.bufnr)
+        vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
+      end)
+
+      -- Mantener comportamiento normal para otros modos
+      map("n", "<CR>", function(prompt_bufnr)
+        local action_state = require("telescope.actions.state")
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+
+        vim.cmd("vsplit")
+        vim.cmd("wincmd l")
+        vim.api.nvim_win_set_buf(0, entry.bufnr)
+        vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
+      end)
+
+      return true
+    end,
+  })
+end, { desc = "Go to references (Telescope modal)" })
+
 vim.keymap.set("n", "K",  vim.lsp.buf.hover, { desc = "Hover documentation" })
 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set("n", "<leader>a",  vim.lsp.buf.code_action, { desc = "Code action" })
