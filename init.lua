@@ -7,9 +7,7 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.wrap = true  -- Activar wrapping de líneas largas
-vim.opt.linebreak = true  -- Wrap en palabras completas, no en medio de palabras
-vim.opt.breakindent = true  -- Mantener indentación en líneas wrapped
+vim.opt.wrap = false  -- Desactivar wrapping (scroll horizontal para líneas largas)
 vim.opt.clipboard = "unnamedplus"  -- Usar clipboard del sistema
 vim.opt.mouse = "a"  -- Habilitar mouse
 
@@ -149,7 +147,12 @@ require("lazy").setup({
           open_file = {
             quit_on_open = false,
             window_picker = {
-              enable = false,  -- Desactiva "Pick window" - abre en última ventana activa
+              enable = true,  -- Habilita selección inteligente de ventana
+              chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+              exclude = {
+                filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
+                buftype = { "nofile", "terminal", "help" },
+              },
             },
           },
           change_dir = {
