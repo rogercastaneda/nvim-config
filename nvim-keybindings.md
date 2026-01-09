@@ -68,7 +68,7 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `a` | Crear nuevo archivo/carpeta |
 | `d` | Eliminar archivo/carpeta |
 | `r` | Renombrar archivo/carpeta |
-| `c` | Copiar archivo (pide destino) |
+| `c` | Copiar archivo al clipboard de nvim-tree |
 | `x` | Cortar archivo |
 | `p` | Pegar archivo |
 | `m` | Marcar/desmarcar archivo (bookmark) |
@@ -79,6 +79,13 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `H` | Mostrar/ocultar archivos ocultos |
 | `R` | Refrescar árbol |
 | `?` | Ver todos los atajos disponibles |
+
+### Flujo para duplicar un archivo
+```
+1. c      → Copiar archivo al clipboard
+2. p      → Pegar en el mismo directorio (duplica)
+          O navegar a otro directorio y pegar ahí
+```
 
 ### Flujo para copiar múltiples archivos
 ```
