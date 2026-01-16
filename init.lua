@@ -19,6 +19,10 @@ vim.opt.winminwidth = 5  -- Ancho mínimo absoluto
 vim.opt.sidescroll = 1  -- Scroll horizontal suave
 vim.opt.sidescrolloff = 8  -- Mantener contexto al hacer scroll horizontal
 
+-- Comportamiento de splits
+vim.opt.splitbelow = true  -- Nuevos splits horizontales se abren abajo
+vim.opt.splitright = true  -- Nuevos splits verticales se abren a la derecha
+
 -- Folding (plegado de código)
 vim.opt.foldmethod = "indent"  -- Plegar basado en indentación
 vim.opt.foldlevel = 99  -- Abrir todos los folds por defecto
@@ -448,18 +452,17 @@ require("lazy").setup({
     "Exafunction/codeium.vim",
     event = "BufEnter",
     config = function()
-      -- Tab para aceptar sugerencia
+      -- Tab para aceptar sugerencia de Codeium (sugerencias inline/ghost text)
       vim.keymap.set("i", "<Tab>", function()
-        if vim.fn["codeium#Accept"]() ~= "" then
-          return vim.fn["codeium#Accept"]()
-        else
-          return "<Tab>"
-        end
+        return vim.fn["codeium#Accept"]()
       end, { expr = true, silent = true })
+
       -- Alt+] para siguiente sugerencia
       vim.keymap.set("i", "<M-]>", function() return vim.fn["codeium#CycleCompletions"](1) end, { expr = true, silent = true })
+
       -- Alt+[ para sugerencia anterior
       vim.keymap.set("i", "<M-[>", function() return vim.fn["codeium#CycleCompletions"](-1) end, { expr = true, silent = true })
+
       -- Ctrl+x para cancelar sugerencia
       vim.keymap.set("i", "<C-x>", function() return vim.fn["codeium#Clear"]() end, { expr = true, silent = true })
     end,
@@ -523,7 +526,7 @@ vim.keymap.set("n", "<leader>tn", ":tabnext<CR>", { desc = "Siguiente tab" })
 vim.keymap.set("n", "<leader>tp", ":tabprevious<CR>", { desc = "Tab anterior" })
 vim.keymap.set("n", "<leader>tc", ":tabclose<CR>", { desc = "Cerrar tab actual" })
 vim.keymap.set("n", "<leader>to", ":tabonly<CR>", { desc = "Cerrar todas las otras tabs" })
-vim.keymap.set("n", "<leader>tt", ":tabnew<CR>", { desc = "Nueva tab" })
+vim.keymap.set("n", "<leader>tt", ":$tabnew<CR>", { desc = "Nueva tab (al final)" })
 
 -- Ir a tab específica con Alt+número (como en navegadores)
 for i = 1, 9 do
@@ -554,7 +557,7 @@ vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Terminal: move to ri
 -- Abrir terminal
 vim.keymap.set("n", "<leader>th", ":belowright split | terminal<CR>", { desc = "Terminal horizontal (abajo)" })
 vim.keymap.set("n", "<leader>tv", ":belowright vsplit | terminal<CR>", { desc = "Terminal vertical (derecha)" })
-vim.keymap.set("n", "<leader>tt", ":terminal<CR>", { desc = "Terminal en buffer actual" })
+vim.keymap.set("n", "<leader>tb", ":terminal<CR>", { desc = "Terminal en buffer actual" })
 
 -- =======================
 --   KEYMAPS TELESCOPE
@@ -628,9 +631,20 @@ setup_lsp("tailwindcss")     -- Tailwind CSS
 local cmp = require("cmp")
 cmp.setup({
   mapping = {
-    ["<Tab>"] = cmp.mapping.select_next_item(),
-    ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-    ["<CR>"]  = cmp.mapping.confirm({ select = true })
+    -- Ctrl+n: Siguiente sugerencia en menú cmp
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+
+    -- Ctrl+p: Anterior sugerencia en menú cmp
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+
+    -- Enter: Confirmar selección de cmp (solo si está visible)
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+
+    -- Ctrl+Space: Abrir manualmente el menú de cmp
+    ["<C-Space>"] = cmp.mapping.complete(),
+
+    -- Ctrl+e: Cerrar menú de cmp
+    ["<C-e>"] = cmp.mapping.abort(),
   },
   sources = {
     { name = "nvim_lsp" },
@@ -666,9 +680,8 @@ vim.keymap.set("n", "gr", function()
         local entry = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
 
-        -- Abrir split vertical a la derecha y saltar al archivo
+        -- Abrir split vertical a la derecha (splitright ya está configurado)
         vim.cmd("vsplit")
-        vim.cmd("wincmd l")  -- Moverse al split derecho
         vim.api.nvim_win_set_buf(0, entry.bufnr)
         vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
       end)
@@ -680,7 +693,6 @@ vim.keymap.set("n", "gr", function()
         actions.close(prompt_bufnr)
 
         vim.cmd("vsplit")
-        vim.cmd("wincmd l")
         vim.api.nvim_win_set_buf(0, entry.bufnr)
         vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
       end)
@@ -695,11 +707,11 @@ vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" }
 vim.keymap.set("n", "<leader>a",  vim.lsp.buf.code_action, { desc = "Code action" })
 vim.keymap.set("n", "<leader>d",  vim.diagnostic.open_float, { desc = "Show diagnostics" })
 
--- Abrir definición en split vertical
+-- Abrir definición en split vertical a la derecha
 vim.keymap.set("n", "<leader>gd", function()
-  vim.cmd("vsplit")
+  vim.cmd("rightbelow vsplit")
   vim.lsp.buf.definition()
-end, { desc = "Go to definition (split)" })
+end, { desc = "Go to definition (split derecha)" })
 
 -- Cerrar quickfix/location list (lista de referencias)
 vim.keymap.set("n", "<leader>q", function()
@@ -716,23 +728,23 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     local opts = { buffer = true, silent = true }
 
-    -- Ctrl+v para abrir en split vertical
+    -- Ctrl+v para abrir en split vertical a la derecha
     vim.keymap.set("n", "<C-v>", function()
       local line = vim.fn.line(".")
       vim.cmd("wincmd p")  -- Volver a la ventana anterior
-      vim.cmd("vsplit")
+      vim.cmd("vsplit")  -- splitright ya está configurado
       vim.cmd("wincmd p")  -- Volver a quickfix
       vim.cmd(line .. "cc") -- Abrir el item
-    end, vim.tbl_extend("force", opts, { desc = "Open in vertical split" }))
+    end, vim.tbl_extend("force", opts, { desc = "Open in vertical split (derecha)" }))
 
-    -- Ctrl+x para abrir en split horizontal
+    -- Ctrl+x para abrir en split horizontal abajo
     vim.keymap.set("n", "<C-x>", function()
       local line = vim.fn.line(".")
       vim.cmd("wincmd p")  -- Volver a la ventana anterior
-      vim.cmd("split")
+      vim.cmd("split")  -- splitbelow ya está configurado
       vim.cmd("wincmd p")  -- Volver a quickfix
       vim.cmd(line .. "cc") -- Abrir el item
-    end, vim.tbl_extend("force", opts, { desc = "Open in horizontal split" }))
+    end, vim.tbl_extend("force", opts, { desc = "Open in horizontal split (abajo)" }))
 
     -- Ctrl+t para abrir en nueva pestaña
     vim.keymap.set("n", "<C-t>", function()

@@ -41,8 +41,8 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | Atajo | Descripción |
 |-------|-------------|
 | `Enter` | Abrir en el buffer actual |
-| `Ctrl+v` | Abrir en split vertical |
-| `Ctrl+x` | Abrir en split horizontal |
+| `Ctrl+v` | Abrir en split vertical a la **derecha** |
+| `Ctrl+x` | Abrir en split horizontal **abajo** |
 | `Ctrl+t` | Abrir en nueva pestaña |
 
 ---
@@ -58,8 +58,8 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | Atajo | Descripción |
 |-------|-------------|
 | `Enter` | Abrir archivo/expandir carpeta en buffer actual |
-| `Ctrl+v` | Abrir archivo en split **vertical** |
-| `Ctrl+x` | Abrir archivo en split **horizontal** |
+| `Ctrl+v` | Abrir archivo en split **vertical a la derecha** |
+| `Ctrl+x` | Abrir archivo en split **horizontal abajo** |
 | `Ctrl+t` | Abrir archivo en nueva **tab** |
 
 ### Operaciones de Archivos (dentro de nvim-tree)
@@ -132,13 +132,15 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 ### Crear y cerrar splits
 | Comando | Descripción |
 |---------|-------------|
-| `:split` o `:sp` | Split horizontal |
-| `:vsplit` o `:vs` | Split vertical |
-| `Ctrl+w s` | Split horizontal (atajo) |
-| `Ctrl+w v` | Split vertical (atajo) |
+| `:split` o `:sp` | Split horizontal (se abre **abajo**) |
+| `:vsplit` o `:vs` | Split vertical (se abre a la **derecha**) |
+| `Ctrl+w s` | Split horizontal (atajo, se abre **abajo**) |
+| `Ctrl+w v` | Split vertical (atajo, se abre a la **derecha**) |
 | `:q` | Cerrar split actual |
 | `Ctrl+w q` | Cerrar split actual (atajo) |
 | `Ctrl+w o` | Cerrar todos menos el actual |
+
+> **Nota:** Todos los splits (horizontal y vertical) se abren automáticamente en la posición natural: horizontales **abajo** y verticales a la **derecha**.
 
 ---
 
@@ -156,7 +158,7 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 ### Gestión de tabs
 | Atajo | Descripción |
 |-------|-------------|
-| `<Space>tt` | Nueva tab vacía |
+| `<Space>tt` | Nueva tab vacía (se abre al final, a la derecha de todas) |
 | `<Space>tc` | Cerrar tab actual |
 | `<Space>to` | Cerrar todas las otras tabs (solo mantener actual) |
 | `Ctrl+t` | Abrir archivo en nueva tab (desde nvim-tree o Telescope) |
@@ -170,7 +172,7 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 |-------|-------------|
 | `<Space>th` | Terminal horizontal (abajo) |
 | `<Space>tv` | Terminal vertical (derecha) |
-| `<Space>tt` | Terminal en buffer actual |
+| `<Space>tb` | Terminal en buffer actual |
 
 ### Salir de terminal mode
 | Atajo | Descripción |
@@ -186,7 +188,7 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | Atajo | Descripción |
 |-------|-------------|
 | `gd` | Ir a definición (mismo buffer) |
-| `<Space>gd` | Ir a definición en split **vertical** |
+| `<Space>gd` | Ir a definición en split **vertical a la derecha** |
 | `gi` | Ir a implementación |
 | `gr` | Ver referencias en **modal flotante** (Telescope) |
 | `K` | Mostrar documentación (hover) |
@@ -195,7 +197,7 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 **Modal de referencias (después de `gr`):**
 - **Navegación**: `j/k` o flechas para moverte entre referencias
 - **Búsqueda**: Escribe para filtrar resultados dentro del modal
-- **Enter**: Abre la referencia en **split vertical a la derecha**
+- **Enter**: Abre la referencia en **split vertical a la derecha** automáticamente
 - **Esc**: Cerrar modal sin seleccionar
 
 ### Diagnósticos (Errores y Warnings)
@@ -224,8 +226,8 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 
 **Desde lista de diagnósticos:**
 - `Enter` - Ir al error en buffer actual
-- `Ctrl+v` - Abrir error en split vertical
-- `Ctrl+x` - Abrir error en split horizontal
+- `Ctrl+v` - Abrir error en split vertical a la **derecha**
+- `Ctrl+x` - Abrir error en split horizontal **abajo**
 - `Ctrl+t` - Abrir error en nueva pestaña
 
 **Ejemplo**: Si ves `E` al lado de la línea 66, significa que ESLint o TypeScript detectó un error en esa línea.
@@ -280,13 +282,54 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 
 ## ✍️ Autocompletado
 
+**Dos sistemas de autocompletado con teclas separadas:**
+
+### 🤖 Codeium (Sugerencias AI inline - texto gris)
 | Atajo | Descripción |
 |-------|-------------|
-| `Tab` | Siguiente sugerencia |
-| `Shift+Tab` | Anterior sugerencia |
-| `Enter` | Confirmar sugerencia |
+| `Tab` | Aceptar sugerencia AI (ghost text gris) |
+| `Alt+]` | Siguiente sugerencia AI |
+| `Alt+[` | Sugerencia anterior AI |
+| `Ctrl+x` | Cancelar sugerencia AI |
 
-**Fuentes:** LSP, buffer, rutas de archivos
+### 📋 nvim-cmp (Menú LSP - popup con opciones)
+| Atajo | Descripción |
+|-------|-------------|
+| `Ctrl+n` | Siguiente opción en menú |
+| `Ctrl+p` | Anterior opción en menú |
+| `Enter` | Confirmar selección del menú |
+| `Ctrl+Space` | Abrir menú manualmente |
+| `Ctrl+e` | Cerrar menú |
+
+**Fuentes nvim-cmp:** LSP, buffer, rutas de archivos
+
+---
+
+### 💡 Ejemplo de uso:
+
+**Escenario 1: Solo Codeium (ghost text gris)**
+```
+Escribes: const user =
+Codeium sugiere: { name: 'John', age: 30 }  ← texto gris
+Presionas: Tab → Se acepta la sugerencia
+```
+
+**Escenario 2: Solo menú nvim-cmp**
+```
+Escribes: console.l
+Aparece menú: log, error, warn, info...
+Presionas: Ctrl+n (bajar) o Ctrl+p (subir) → Enter para confirmar
+```
+
+**Escenario 3: Ambos aparecen al mismo tiempo**
+```
+Codeium: muestra sugerencia gris completa
+nvim-cmp: muestra menú con opciones
+
+Opción A: Tab → Acepta sugerencia de Codeium (ignora menú)
+Opción B: Ctrl+e → Cierra menú, luego Tab → Acepta Codeium
+Opción C: Ctrl+n/p → Navega menú, Enter → Acepta del menú (ignora Codeium)
+```
 
 ---
 
@@ -313,14 +356,9 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 
 **Sugerencias de código en tiempo real - GRATIS**
 
-| Atajo | Descripción |
-|-------|-------------|
-| `Tab` | Aceptar sugerencia AI |
-| `Alt+]` | Siguiente sugerencia |
-| `Alt+[` | Sugerencia anterior |
-| `Ctrl+x` | Cancelar sugerencia |
+Codeium muestra sugerencias de código completo mientras escribes (aparece como texto gris/transparente después del cursor).
 
-**Activación:** Aparece automáticamente mientras escribes código
+**Atajos:** Ver sección "✍️ Autocompletado" arriba para todos los atajos de Codeium y nvim-cmp.
 
 ---
 
@@ -556,8 +594,10 @@ O cierra y reabre Neovim.
 6. **LSP:** `K` dos veces para entrar al hover popup
 7. **Comentarios:** Funcionan en cualquier lenguaje automáticamente
 8. **Diagnósticos:** `]d` y `[d` para navegar entre errores/warnings, `K` para ver detalles
+9. **Autocompletado:** `Tab` para Codeium (AI inline), `Ctrl+n/p` para nvim-cmp (menú LSP)
+10. **Conflicto de sugerencias:** Si ambos aparecen, `Ctrl+e` cierra el menú y `Tab` acepta Codeium
 
 ---
 
 **Archivo de configuración:** `~/.config/nvim/init.lua`
-**Fecha actualización:** 2026-01-07
+**Fecha actualización:** 2026-01-15
