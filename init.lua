@@ -11,6 +11,22 @@ vim.opt.wrap = false  -- Desactivar wrapping (scroll horizontal para líneas lar
 vim.opt.clipboard = "unnamedplus"  -- Usar clipboard del sistema
 vim.opt.mouse = "a"  -- Habilitar mouse
 
+-- OSC52: Permite copiar al clipboard del sistema a través de SSH
+-- Funciona con terminales modernos (iTerm2, Terminal.app, Alacritty, Kitty, etc.)
+if vim.env.SSH_TTY then
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
+  }
+end
+
 -- Balance automático de ventanas
 vim.opt.equalalways = true  -- Mantener ventanas del mismo tamaño
 vim.opt.eadirection = "both"  -- Igualar en ambas direcciones (vertical y horizontal)
