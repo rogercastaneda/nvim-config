@@ -274,13 +274,9 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 | `q` (dentro de LazyGit) | Cerrar LazyGit |
 
 **Dentro de LazyGit:**
-- `e` - Editar archivo (cierra lazygit y abre el archivo en Neovim)
-- `Espacio` - Stagear/Unstagear archivo
-- `c` - Commit
-- `P` - Push
-- `p` - Pull
-- `Esc` - Cancelar operaciones
-- `?` - Ver todos los atajos disponibles
+- Navegación visual completa de git
+- `Esc` funciona normalmente para cancelar operaciones
+- Consulta la documentación de LazyGit para más atajos
 
 ---
 
