@@ -28,6 +28,9 @@ sudo apt install build-essential
 
 # lazygit (para el plugin lazygit.nvim)
 # Ver: https://github.com/jesseduffield/lazygit#installation
+
+# neovim-remote (para abrir archivos desde lazygit en nvim)
+pip install neovim-remote
 ```
 
 ### macOS
@@ -50,6 +53,9 @@ brew install node
 
 # lazygit (para el plugin lazygit.nvim)
 brew install lazygit
+
+# neovim-remote (para abrir archivos desde lazygit en nvim)
+brew install neovim-remote
 ```
 
 ---
