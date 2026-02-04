@@ -303,14 +303,8 @@ require("lazy").setup({
       local null_ls = require("null-ls")
       null_ls.setup({
         sources = {
-          -- JavaScript/TypeScript (usar eslint/prettier del proyecto)
+          -- JavaScript/TypeScript (prettier para formateo, eslint via LSP)
           null_ls.builtins.formatting.prettier.with({
-            prefer_local = "node_modules/.bin",
-          }),
-          null_ls.builtins.diagnostics.eslint.with({
-            prefer_local = "node_modules/.bin",
-          }),
-          null_ls.builtins.code_actions.eslint.with({
             prefer_local = "node_modules/.bin",
           }),
 
@@ -627,7 +621,8 @@ require("mason-lspconfig").setup({
     "dockerls","terraformls","pyright",
     "gopls",  -- Go Language Server
     "tinymist",  -- Typst Language Server
-    "tailwindcss"  -- Tailwind CSS Language Server
+    "tailwindcss",  -- Tailwind CSS Language Server
+    "eslint"  -- ESLint Language Server (diagnostics + code actions)
   }
 })
 
@@ -652,6 +647,7 @@ setup_lsp("pyright")         -- Python
 setup_lsp("gopls")           -- Go
 setup_lsp("tinymist")        -- Typst
 setup_lsp("tailwindcss")     -- Tailwind CSS
+setup_lsp("eslint")          -- ESLint (diagnostics + code actions)
 
 -- =======================
 --    AUTOCOMPLETE CMP
