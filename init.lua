@@ -303,10 +303,16 @@ require("lazy").setup({
       local null_ls = require("null-ls")
       null_ls.setup({
         sources = {
-          -- JavaScript/TypeScript
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.diagnostics.eslint,
-          null_ls.builtins.code_actions.eslint,
+          -- JavaScript/TypeScript (usar eslint/prettier del proyecto)
+          null_ls.builtins.formatting.prettier.with({
+            prefer_local = "node_modules/.bin",
+          }),
+          null_ls.builtins.diagnostics.eslint.with({
+            prefer_local = "node_modules/.bin",
+          }),
+          null_ls.builtins.code_actions.eslint.with({
+            prefer_local = "node_modules/.bin",
+          }),
 
           -- PHP (requiere phpcs y phpcbf instalados: composer global require squizlabs/php_codesniffer)
           null_ls.builtins.formatting.phpcbf,
