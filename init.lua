@@ -76,6 +76,8 @@ vim.g.mapleader = " "   -- Spacebar líder
 --     PLUGINS (Lazy)
 -- =======================
 require("lazy").setup({
+  -- Auto-cargar plugins desde lua/plugins/*.lua
+  { import = "plugins" },
 
   -- THEME (COLOR SCHEME)
   {
