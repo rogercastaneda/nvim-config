@@ -390,6 +390,36 @@ require("lazy").setup({
     end,
   },
 
+  -- GIT SIGNS + INLINE BLAME (como GitLens en VSCode)
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("gitsigns").setup({
+        current_line_blame = true,  -- Blame inline en línea activa
+        current_line_blame_opts = {
+          virt_text = true,
+          virt_text_pos = "eol",  -- Al final de la línea
+          delay = 300,            -- ms antes de mostrar
+          ignore_whitespace = false,
+        },
+        current_line_blame_formatter = " <author>, <author_time:%d %b %Y> • <abbrev_sha>: <summary>",
+        signs = {
+          add          = { text = "▎" },
+          change       = { text = "▎" },
+          delete       = { text = "▁" },
+          topdelete    = { text = "▔" },
+          changedelete = { text = "▎" },
+        },
+      })
+
+      -- Toggle inline blame con <leader>gb
+      vim.keymap.set("n", "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Toggle git blame inline" })
+      -- Ver blame completo del archivo con <leader>gB
+      vim.keymap.set("n", "<leader>gB", "<cmd>Gitsigns blame<CR>", { desc = "Git blame (archivo completo)" })
+    end,
+  },
+
   -- LAZYGIT (git UI)
   {
     "kdheepak/lazygit.nvim",
