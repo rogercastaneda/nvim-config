@@ -728,28 +728,22 @@ vim.keymap.set("n", "gr", function()
     attach_mappings = function(_, map)
       local actions = require("telescope.actions")
 
-      -- Enter abre en vsplit vertical a la derecha
-      map("i", "<CR>", function(prompt_bufnr)
-        local action_state = require("telescope.actions.state")
-        local entry = action_state.get_selected_entry()
-        actions.close(prompt_bufnr)
-
-        -- Abrir split vertical a la derecha (splitright ya está configurado)
-        vim.cmd("vsplit")
-        vim.api.nvim_win_set_buf(0, entry.bufnr)
-        vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
-      end)
-
-      -- Mantener comportamiento normal para otros modos
-      map("n", "<CR>", function(prompt_bufnr)
+      local open_entry = function(prompt_bufnr)
         local action_state = require("telescope.actions.state")
         local entry = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
 
         vim.cmd("vsplit")
-        vim.api.nvim_win_set_buf(0, entry.bufnr)
+        if entry.bufnr and vim.api.nvim_buf_is_valid(entry.bufnr) then
+          vim.api.nvim_win_set_buf(0, entry.bufnr)
+        else
+          vim.cmd("edit " .. vim.fn.fnameescape(entry.filename))
+        end
         vim.api.nvim_win_set_cursor(0, { entry.lnum, entry.col - 1 })
-      end)
+      end
+
+      map("i", "<CR>", open_entry)
+      map("n", "<CR>", open_entry)
 
       return true
     end,
