@@ -355,26 +355,7 @@ require("lazy").setup({
     end,
   },
 
-  -- COMENTARIOS
-  {
-    "numToStr/Comment.nvim",
-    lazy = false, -- Cargar inmediatamente
-    config = function()
-      require("Comment").setup({
-        padding = true,
-        sticky = true,
-        ignore = "^$", -- Ignorar líneas vacías
-        toggler = {
-          line = "gcc", -- Toggle línea
-          block = "gbc", -- Toggle bloque
-        },
-        opleader = {
-          line = "gc",
-          block = "gb",
-        },
-      })
-    end,
-  },
+  -- COMENTARIOS: eliminado Comment.nvim, Neovim 0.10+ tiene gc/gcc nativo
 
   -- WHICH-KEY (muestra comandos disponibles)
   {
@@ -677,7 +658,24 @@ setup_lsp("pyright")         -- Python
 setup_lsp("gopls")           -- Go
 setup_lsp("tinymist")        -- Typst
 setup_lsp("tailwindcss")     -- Tailwind CSS
-setup_lsp("eslint")          -- ESLint (diagnostics + code actions)
+vim.lsp.config("eslint", {   -- ESLint (diagnostics + code actions)
+  capabilities = capabilities,
+  settings = {
+    eslint = {
+      experimental = {
+        useFlatConfig = true,
+      },
+    },
+  },
+  handlers = {
+    -- Suppress circular JSON error from @typescript-eslint flat config (vscode-langservers-extracted bug)
+    ["textDocument/diagnostic"] = function(err, result, ctx, config)
+      if err then return end
+      local default = vim.lsp.handlers["textDocument/diagnostic"]
+      if default then default(err, result, ctx, config) end
+    end,
+  },
+})
 
 -- =======================
 --    AUTOCOMPLETE CMP
