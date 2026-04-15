@@ -371,6 +371,103 @@ require("lazy").setup({
     end,
   },
 
+  -- NOICE (UI mejorada: cmdline, mensajes, notificaciones)
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    config = function()
+      require("noice").setup({
+        lsp = {
+          -- Evitar conflictos con otros plugins LSP
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
+          },
+        },
+        presets = {
+          bottom_search = true,       -- cmdline de búsqueda abajo
+          command_palette = true,     -- cmdline centrada al usar :
+          long_message_to_split = true, -- mensajes largos van a split
+          lsp_doc_border = true,      -- borde en el hover de LSP
+        },
+      })
+    end,
+  },
+
+  -- FLASH (navegación rápida por pantalla)
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("flash").setup()
+    end,
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash: saltar a cualquier lugar" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash: selección treesitter" },
+    },
+  },
+
+  -- TROUBLE (panel de diagnósticos LSP)
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Trouble: diagnósticos del proyecto" },
+      { "<leader>xf", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Trouble: diagnósticos del archivo" },
+      { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Trouble: location list" },
+      { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Trouble: quickfix list" },
+    },
+    config = function()
+      require("trouble").setup()
+    end,
+  },
+
+  -- STATUSLINE
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("lualine").setup({
+        options = {
+          theme = "auto",  -- detecta catppuccin automáticamente
+          component_separators = { left = "|", right = "|" },
+          section_separators = { left = "", right = "" },
+          globalstatus = true,  -- Una sola statusline para todas las ventanas
+        },
+        sections = {
+          lualine_a = { "mode" },
+          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_c = { { "filename", path = 1 } },  -- path=1: ruta relativa
+          lualine_x = { "encoding", "filetype" },
+          lualine_y = { "progress" },
+          lualine_z = { "location" },
+        },
+      })
+    end,
+  },
+
+  -- AUTO PAIRS (cierra brackets, quotes automáticamente)
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = function()
+      local autopairs = require("nvim-autopairs")
+      autopairs.setup({
+        check_ts = true,  -- Usa treesitter para contexto
+      })
+
+      -- Integración con cmp: agrega ")" al aceptar una función
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      local cmp = require("cmp")
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    end,
+  },
+
   -- GIT SIGNS + INLINE BLAME (como GitLens en VSCode)
   {
     "lewis6991/gitsigns.nvim",

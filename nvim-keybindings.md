@@ -250,6 +250,39 @@ Cuando estás en la lista de resultados de `<Space>f` o `<Space>g`:
 
 ---
 
+## ⚡ Flash (Navegación Rápida)
+
+| Atajo | Modo | Descripción |
+|-------|------|-------------|
+| `s` | Normal, Visual, Operator | Saltar a cualquier lugar visible en pantalla |
+| `S` | Normal, Visual, Operator | Selección por treesitter |
+
+**¿Cómo funciona?**
+1. Presionás `s` en modo normal
+2. Escribís 2-3 letras del lugar al que querés ir
+3. Flash muestra etiquetas (letras resaltadas) junto a cada match
+4. Presionás la etiqueta y saltás directo ahí
+
+**Nota:** Solo funciona con lo que está visible en pantalla. Para navegar a otra parte del archivo primero usá `/búsqueda` y luego flash para precisión.
+
+---
+
+## 🔴 Trouble (Diagnósticos LSP)
+
+| Atajo | Descripción |
+|-------|-------------|
+| `<Space>xx` | Panel de diagnósticos de todo el proyecto |
+| `<Space>xf` | Diagnósticos del archivo actual |
+| `<Space>xl` | Location list |
+| `<Space>xq` | Quickfix list |
+
+**Dentro del panel Trouble:**
+- `j/k` — navegar entre items
+- `Enter` — ir al error/warning
+- `q` o `<Esc>` — cerrar panel
+
+---
+
 ## 🔍 Búsqueda y Reemplazo (Spectre)
 
 | Atajo | Descripción |
@@ -574,8 +607,13 @@ O cierra y reabre Neovim.
 - **Typst.vim** - Typst language support
 - **Mason** - LSP installer
 - **nvim-cmp** - Autocompletado
-- **Comment.nvim** - Comentarios inteligentes
 - **Which-key** - Muestra atajos disponibles
+- **Lualine** - Statusline con modo, rama, diagnósticos
+- **nvim-autopairs** - Cierre automático de brackets y quotes
+- **Noice.nvim** - UI moderna para cmdline y notificaciones
+- **Flash.nvim** - Navegación rápida por pantalla
+- **Trouble.nvim** - Panel de diagnósticos LSP mejorado
+- **Gitsigns** - Blame inline y signos de cambios git
 - **Auto-Session** - Persistencia de sesiones por proyecto
 - **LazyGit.nvim** - Interfaz Git visual
 - **nvim-spectre** - Búsqueda y reemplazo avanzado
@@ -600,4 +638,4 @@ O cierra y reabre Neovim.
 ---
 
 **Archivo de configuración:** `~/.config/nvim/init.lua`
-**Fecha actualización:** 2026-01-15
+**Fecha actualización:** 2026-04-15

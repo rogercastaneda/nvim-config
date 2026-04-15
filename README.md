@@ -221,8 +221,13 @@ return userName;          // ← se resalta automáticamente
 | **typst.vim** | Typst support | Soporte para lenguaje Typst |
 | **mason** | LSP installer | Instalador de language servers |
 | **nvim-cmp** | Autocompletado | Sugerencias de código |
-| **Comment.nvim** | Comentarios | Toggle comentarios inteligente |
 | **which-key** | Key helper | Muestra atajos disponibles |
+| **lualine** | Statusline | Barra de estado con modo, rama, diagnósticos |
+| **nvim-autopairs** | Auto brackets | Cierra automáticamente brackets y quotes |
+| **noice.nvim** | UI mejorada | Cmdline flotante, notificaciones modernas |
+| **flash.nvim** | Navegación rápida | Saltos instantáneos a cualquier parte de pantalla |
+| **trouble.nvim** | Panel diagnósticos | Vista mejorada de errores/warnings LSP |
+| **gitsigns** | Git inline | Blame inline y signos de cambios en margen |
 | **lazygit.nvim** | Git UI | Interfaz visual para Git |
 | **auto-session** | Session manager | Persistencia de sesiones por proyecto |
 | **nvim-spectre** | Search & Replace | Búsqueda y reemplazo visual en proyecto |
