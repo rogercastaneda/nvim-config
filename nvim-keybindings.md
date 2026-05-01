@@ -418,6 +418,11 @@ Codeium muestra sugerencias de código completo mientras escribes (aparece como 
 | `:Telescope keymaps` | Buscar todos los atajos |
 | `:map` | Ver todos los keymaps |
 
+### Markdown
+| Comando | Descripción |
+|---------|-------------|
+| `:RenderMarkdown toggle` | Activar/desactivar render in-buffer |
+
 ### Edición básica
 | Atajo | Descripción |
 |-------|-------------|
@@ -603,7 +608,8 @@ O cierra y reabre Neovim.
 - **Catppuccin** - Theme (frappe flavor)
 - **Telescope** - Fuzzy finder
 - **nvim-tree** - File explorer con bookmarks
-- **Treesitter** - Syntax highlighting
+- **Treesitter** - Syntax highlighting (built-in nvim 0.12+)
+- **render-markdown.nvim** - Markdown rendering in-buffer (headers, tablas, code blocks)
 - **Typst.vim** - Typst language support
 - **Mason** - LSP installer
 - **nvim-cmp** - Autocompletado
@@ -638,4 +644,4 @@ O cierra y reabre Neovim.
 ---
 
 **Archivo de configuración:** `~/.config/nvim/init.lua`
-**Fecha actualización:** 2026-04-15
+**Fecha actualización:** 2026-05-01
