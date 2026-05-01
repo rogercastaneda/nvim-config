@@ -271,11 +271,7 @@ require("lazy").setup({
     end,
   },
 
-  -- TREESITTER (syntax + highlight mejorado)
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate"
-  },
+  -- nvim-treesitter removido: archivado, nvim 0.12+ tiene treesitter built-in
 
   -- TYPST (markup language para PDFs)
   {
@@ -577,6 +573,22 @@ require("lazy").setup({
     end,
   },
 
+  -- MARKDOWN RENDER (colores y preview in-buffer)
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    ft = { "markdown" },
+    config = function()
+      require("render-markdown").setup({
+        heading = { enabled = true },
+        code = { enabled = true },
+        bullet = { enabled = true },
+        checkbox = { enabled = true },
+        table = { enabled = true },
+      })
+    end,
+  },
+
   -- AI INLINE COMPLETIONS (Codeium - gratis)
   {
     "Exafunction/codeium.vim",
@@ -604,7 +616,6 @@ require("lazy").setup({
     version = "v17.33.0", -- Pin a versión estable
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
       "hrsh7th/nvim-cmp", -- Ya lo tienes
       "nvim-telescope/telescope.nvim", -- Ya lo tienes
     },
@@ -637,6 +648,15 @@ require("lazy").setup({
       })
     end,
   },
+})
+
+-- =======================
+--   TREESITTER NATIVO (nvim 0.12+)
+-- =======================
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
 })
 
 -- =======================
