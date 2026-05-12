@@ -494,19 +494,24 @@ require("lazy").setup({
     end,
   },
 
-  -- LAZYGIT (git UI)
+  -- LAZYGIT (git UI via snacks.nvim)
   {
-    "kdheepak/lazygit.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    keys = {
-      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      lazygit = {
+        configure = true,
+        config = {
+          os = { editPreset = "nvim-remote" },
+          gui = { nerdFontsVersion = "3" },
+        },
+      },
     },
-    config = function()
-      vim.g.lazygit_floating_window_winblend = 0
-      vim.g.lazygit_floating_window_scaling_factor = 0.9
-      vim.g.lazygit_floating_window_use_plenary = 1
-      vim.g.lazygit_use_neovim_remote = 1
-    end,
+    keys = {
+      { "<leader>lg", function() Snacks.lazygit() end, desc = "LazyGit" },
+      { "<leader>lf", function() Snacks.lazygit.log_file() end, desc = "LazyGit log (archivo actual)" },
+    },
   },
 
   -- SEARCH & REPLACE (UI visual)
