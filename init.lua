@@ -7,7 +7,8 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.wrap = false  -- Desactivar wrapping (scroll horizontal para líneas largas)
+vim.opt.wrap = true
+vim.opt.linebreak = true  -- wrap en límite de palabra, no en medio de una
 vim.opt.clipboard = "unnamedplus"  -- Usar clipboard del sistema
 vim.opt.mouse = "a"  -- Habilitar mouse
 
