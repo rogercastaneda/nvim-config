@@ -292,7 +292,40 @@ require("lazy").setup({
   "hrsh7th/cmp-path",
   "hrsh7th/cmp-cmdline",
 
-  -- FORMATEO Y LINTING (none-ls)
+  -- FORMATEO (conform.nvim)
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          javascript      = { "prettier" },
+          typescript      = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescriptreact = { "prettier" },
+          json            = { "prettier" },
+          css             = { "prettier" },
+          html            = { "prettier" },
+          php             = { "phpcbf" },
+          python          = { "black" },
+          go              = { "gofmt" },
+          sh              = { "shfmt" },
+          bash            = { "shfmt" },
+          hcl             = { "terragrunt_hclfmt" },
+          terraform       = { "terraform_fmt" },
+        },
+        formatters = {
+          prettier = { prefer_local = "node_modules/.bin" },
+        },
+        format_on_save = {
+          timeout_ms = 3000,
+          lsp_fallback = true,
+        },
+      })
+    end,
+  },
+
+  -- LINTING (none-ls - solo diagnósticos)
   {
     "nvimtools/none-ls.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -300,32 +333,11 @@ require("lazy").setup({
       local null_ls = require("null-ls")
       null_ls.setup({
         sources = {
-          -- JavaScript/TypeScript (prettier para formateo, eslint via LSP)
-          null_ls.builtins.formatting.prettier.with({
-            prefer_local = "node_modules/.bin",
-          }),
-
-          -- PHP (requiere phpcs y phpcbf instalados: composer global require squizlabs/php_codesniffer)
-          null_ls.builtins.formatting.phpcbf,
+          -- PHP
           null_ls.builtins.diagnostics.phpcs,
-
-          -- Python (requiere black y pylint: pip install black pylint)
-          null_ls.builtins.formatting.black,
+          -- Python
           null_ls.builtins.diagnostics.pylint,
-
-          -- Go (requiere gofmt - viene con Go)
-          null_ls.builtins.formatting.gofmt,
-
-          -- Shell (requiere shfmt: brew install shfmt)
-          null_ls.builtins.formatting.shfmt,
         },
-      })
-
-      -- Format on save
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        callback = function()
-          vim.lsp.buf.format({ async = false })
-        end,
       })
     end,
   },
@@ -747,6 +759,18 @@ vim.keymap.set("v", "<leader>aa", "<cmd>CodeCompanionChat Add<cr>", { desc = "AI
 -- =======================
 --      MASON + LSP
 -- =======================
+-- nvm doesn't load in non-interactive shells; resolve default node version at runtime
+local nvm_default = vim.fn.expand("~/.nvm/alias/default")
+if vim.fn.filereadable(nvm_default) == 1 then
+  local version = vim.fn.trim(vim.fn.system("cat " .. nvm_default))
+  -- resolve alias chains (e.g. "node" -> actual version)
+  local resolved = vim.fn.trim(vim.fn.system("ls -d ~/.nvm/versions/node/v* 2>/dev/null | sort -V | tail -1"))
+  local node_bin = resolved .. "/bin"
+  if vim.fn.isdirectory(node_bin) == 1 and not vim.env.PATH:find(node_bin, 1, true) then
+    vim.env.PATH = node_bin .. ":" .. vim.env.PATH
+  end
+end
+
 require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = {
@@ -805,6 +829,10 @@ vim.lsp.config("eslint", {   -- ESLint (diagnostics + code actions)
 -- =======================
 local cmp = require("cmp")
 cmp.setup({
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
   mapping = {
     -- Ctrl+n: Siguiente sugerencia en menú cmp
     ["<C-n>"] = cmp.mapping.select_next_item(),

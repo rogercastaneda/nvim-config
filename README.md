@@ -231,7 +231,8 @@ return userName;          // ← se resalta automáticamente
 | **lazygit.nvim** | Git UI | Interfaz visual para Git |
 | **auto-session** | Session manager | Persistencia de sesiones por proyecto |
 | **nvim-spectre** | Search & Replace | Búsqueda y reemplazo visual en proyecto |
-| **none-ls** | Formateo y linting | ESLint, Prettier, y formateadores multi-lenguaje |
+| **conform.nvim** | Formateo | Prettier, black, gofmt, shfmt, phpcbf, terragrunt_hclfmt |
+| **none-ls** | Linting | Diagnósticos: phpcs, pylint |
 | **vim-illuminate** | Highlight referencias | Resalta automáticamente usos de variables/funciones |
 | **codecompanion** | AI assistant | Chat con Claude/Gemini |
 | **codeium** | AI completions | Autocompletado inline con AI (gratis) |
@@ -260,32 +261,27 @@ Instalados automáticamente via Mason:
 
 ---
 
-## Formateo y Linting (none-ls)
+## Formateo (conform.nvim) y Linting (none-ls)
 
-none-ls proporciona formateo automático y validación de código. Detecta automáticamente las configuraciones del proyecto (`.eslintrc`, `.prettierrc`, etc.).
+**conform.nvim** maneja todo el formateo automático. **none-ls** solo provee diagnósticos (linting).
 
 ### Herramientas Soportadas
 
 | Lenguaje | Formateador | Linter | Instalación |
 |----------|-------------|--------|-------------|
-| **JavaScript/TypeScript** | Prettier | ESLint | `npm install -g eslint prettier` |
+| **JavaScript/TypeScript** | Prettier | ESLint (via LSP) | `npm install -g prettier` |
 | **PHP** | phpcbf | phpcs | `composer global require squizlabs/php_codesniffer` |
-| **Python** | black | pylint | `pip install black pylint` |
+| **Python** | black | pylint | `uv tool install black pylint` |
 | **Go** | gofmt | - | Incluido con Go |
 | **Shell** | shfmt | - | `brew install shfmt` (macOS) / `apt install shfmt` (Linux) |
+| **Terraform** | terraform_fmt | - | Incluido con Terraform |
+| **Terragrunt/HCL** | terragrunt_hclfmt | - | `brew install terragrunt` |
 
 ### Funcionalidades
 
 - **Format on save**: Formatea automáticamente al guardar (`:w`)
-- **Code actions**: `<leader>a` muestra fixes de ESLint disponibles
-- **Configuración por proyecto**: Usa `.eslintrc`, `.prettierrc` del proyecto automáticamente
-- **Multi-lenguaje**: Soporte para JS/TS, PHP, Python, Go, Shell
-
-### Notas
-
-- **Proyectos con package.json**: Si el proyecto tiene `eslint`/`prettier` en `package.json`, none-ls usa esas versiones automáticamente
-- **Instalación global**: Solo necesaria si trabajas en proyectos sin estas dependencias
-- **Desactivar temporalmente**: Puedes comentar la sección "Format on save" en `init.lua`
+- **Configuración por proyecto**: Prettier usa versión local de `node_modules/.bin` si existe
+- **LSP fallback**: Si no hay formatter configurado para el filetype, usa el LSP
 
 ---
 
@@ -356,21 +352,17 @@ source ~/.zshrc
 - Verificar que estés en el mismo directorio donde guardaste la sesión
 - Las sesiones se guardan por directorio de trabajo
 
-### Prettier/ESLint no funciona
+### Prettier no funciona
 ```bash
-# Verificar que las herramientas estén instaladas
 which prettier
-which eslint
-
-# Si están en node_modules del proyecto, none-ls las encontrará automáticamente
-# Si no, instala globalmente:
-npm install -g eslint prettier
+# Si no está: npm install -g prettier
+# conform.nvim busca automáticamente en node_modules/.bin del proyecto
 ```
 
 ### Format on save no funciona
-- Verificar que las herramientas estén instaladas (ver arriba)
-- Revisar logs: `:messages`
-- Para PHP/Python/Shell: instalar herramientas correspondientes (ver sección "Formateo y Linting")
+- Verificar herramientas instaladas (ver tabla de formateo)
+- Revisar logs: `:ConformInfo`
+- Para Terragrunt: verificar `which terragrunt`
 
 ### Highlight de referencias no funciona
 - Espera 100ms después de mover el cursor (delay configurado)
