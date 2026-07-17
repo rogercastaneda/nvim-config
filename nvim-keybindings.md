@@ -621,7 +621,7 @@ O cierra y reabre Neovim.
 - **Trouble.nvim** - Panel de diagnósticos LSP mejorado
 - **Gitsigns** - Blame inline y signos de cambios git
 - **Auto-Session** - Persistencia de sesiones por proyecto
-- **LazyGit.nvim** - Interfaz Git visual
+- **snacks.nvim** - Interfaz Git visual (LazyGit)
 - **nvim-spectre** - Búsqueda y reemplazo avanzado
 - **Codeium** - AI inline completions (gratis)
 - **CodeCompanion** - AI code suggestions (Claude/Gemini)

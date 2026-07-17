@@ -26,7 +26,7 @@ sudo apt install nodejs
 # Build essentials (para compilar algunos plugins)
 sudo apt install build-essential
 
-# lazygit (para el plugin lazygit.nvim)
+# lazygit (usado via snacks.nvim)
 # Ver: https://github.com/jesseduffield/lazygit#installation
 ```
 
@@ -77,8 +77,8 @@ fc-cache -fv
 ### macOS
 
 ```bash
-# Usando Homebrew
-brew tap homebrew/cask-fonts
+# Usando Homebrew (font-jetbrains-mono-nerd-font vive en el tap principal homebrew/cask,
+# no requiere tap adicional — homebrew/cask-fonts fue deprecado)
 brew install --cask font-jetbrains-mono-nerd-font
 ```
 
@@ -125,6 +125,8 @@ chmod 600 ~/.config/nvim/api_keys.lua
 ## Codeium (AI Inline Completions)
 
 Codeium proporciona autocompletado inline gratuito con AI (similar a Copilot).
+
+> **Requisito:** primero completa la sección [Instalación](#instalación) — `:Codeium Auth` falla si lazy.nvim todavía no instaló los plugins. Abre `nvim` una vez primero, espera a que termine la instalación automática, y recién ahí corre `:Codeium Auth`.
 
 ### Autenticación (primera vez)
 
@@ -217,7 +219,7 @@ return userName;          // ← se resalta automáticamente
 | **catppuccin** | Theme/colorscheme | Tema visual (flavor: frappe) |
 | **nvim-tree** | File explorer | Navegación de archivos con sistema de bookmarks |
 | **telescope** | Fuzzy finder | Búsqueda de archivos y texto |
-| **treesitter** | Syntax highlighting | Resaltado de sintaxis mejorado |
+| **treesitter** | Syntax highlighting | Nativo de Neovim 0.12+ (sin plugin, activado via `vim.treesitter.start`) |
 | **typst.vim** | Typst support | Soporte para lenguaje Typst |
 | **mason** | LSP installer | Instalador de language servers |
 | **nvim-cmp** | Autocompletado | Sugerencias de código |
@@ -228,9 +230,10 @@ return userName;          // ← se resalta automáticamente
 | **flash.nvim** | Navegación rápida | Saltos instantáneos a cualquier parte de pantalla |
 | **trouble.nvim** | Panel diagnósticos | Vista mejorada de errores/warnings LSP |
 | **gitsigns** | Git inline | Blame inline y signos de cambios en margen |
-| **lazygit.nvim** | Git UI | Interfaz visual para Git |
+| **snacks.nvim** | Git UI (lazygit) | Interfaz visual para Git, abre archivos con nvim-remote |
 | **auto-session** | Session manager | Persistencia de sesiones por proyecto |
 | **nvim-spectre** | Search & Replace | Búsqueda y reemplazo visual en proyecto |
+| **render-markdown.nvim** | Markdown preview | Colores y renderizado in-buffer para .md |
 | **conform.nvim** | Formateo | Prettier, black, gofmt, shfmt, phpcbf, terragrunt_hclfmt |
 | **none-ls** | Linting | Diagnósticos: phpcs, pylint |
 | **vim-illuminate** | Highlight referencias | Resalta automáticamente usos de variables/funciones |
@@ -290,7 +293,7 @@ Instalados automáticamente via Mason:
 | Funcionalidad | Descripción |
 |---------------|-------------|
 | **Clipboard del sistema** | Copiar/pegar integrado con el OS |
-| **Line wrapping** | Wrapping visual de líneas largas (activado por defecto) |
+| **Line wrapping** | Wrapping visual de líneas largas, corta en límite de palabra (`linebreak`) |
 | **Folding** | Plegado de código por indentación |
 | **Splits** | Navegación y redimensionado de ventanas |
 | **Terminal integrado** | Terminal dentro de Neovim |
