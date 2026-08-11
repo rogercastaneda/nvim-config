@@ -512,6 +512,8 @@ require("lazy").setup({
     keys = {
       { "<leader>lg", function() Snacks.lazygit() end, desc = "LazyGit" },
       { "<leader>lf", function() Snacks.lazygit.log_file() end, desc = "LazyGit log (archivo actual)" },
+      { "<leader>tt", function() Snacks.terminal() end, desc = "Terminal flotante (toggle)", mode = { "n", "t" } },
+      { "<leader>tr", function() Snacks.terminal(nil, { win = { position = "right", width = 0.35 } }) end, desc = "Terminal derecha (toggle)", mode = { "n", "t" } },
     },
   },
 
@@ -682,7 +684,7 @@ vim.keymap.set("n", "<leader>tn", ":tabnext<CR>", { desc = "Siguiente tab" })
 vim.keymap.set("n", "<leader>tp", ":tabprevious<CR>", { desc = "Tab anterior" })
 vim.keymap.set("n", "<leader>tc", ":tabclose<CR>", { desc = "Cerrar tab actual" })
 vim.keymap.set("n", "<leader>to", ":tabonly<CR>", { desc = "Cerrar todas las otras tabs" })
-vim.keymap.set("n", "<leader>tt", ":$tabnew<CR>", { desc = "Nueva tab (al final)" })
+vim.keymap.set("n", "<leader>tN", ":$tabnew<CR>", { desc = "Nueva tab (al final)" })
 
 -- Ir a tab específica con Alt+número (como en navegadores)
 for i = 1, 9 do
